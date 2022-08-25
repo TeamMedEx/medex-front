@@ -3,7 +3,7 @@ name: deployment
 on:
   push:
     branches:
-      - 'master'
+      - 'main'
 
 env:
   HEROKU_APP_NAME: medex-app
