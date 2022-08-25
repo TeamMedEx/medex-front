@@ -1,0 +1,11 @@
+{
+  "name": "nest-next-example",
+  "repository": "https://github.com/goarvmn/nest-next-example",
+  "env": {
+    "NODE_ENV": {
+      "value": "production"
+    }
+  },
+  "addons": [],
+  "stack": "container"
+}

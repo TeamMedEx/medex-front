@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* base html tag */
+@layer base {
+  body {
+    @apply text-[#151515];
+  }
+
+  header {
+    @apply fixed top-0 z-50 flex w-full items-center justify-between px-4 py-4 transition-all lg:px-10 lg:py-6;
+  }
+}
+
+@layer components {
+  .customClass {
+    @apply cursor-pointer text-sm font-normal text-[#3c3b3b] hover:text-[#7a7a7a];
+  }
+}

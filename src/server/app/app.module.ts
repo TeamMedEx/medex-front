@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
-import { RenderModule } from 'nest-next';
-import Next from 'next';
+import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
 @Module({
-  imports: [RenderModule.forRootAsync(Next({ dev: true }), { viewsDir: null })],
+  imports: [ConfigModule.forRoot({ isGlobal: true })],
   controllers: [AppController],
   providers: [AppService],
+  exports: [AppService],
 })
 export class AppModule {}
