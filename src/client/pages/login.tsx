@@ -17,7 +17,9 @@ const Login: FC<ILoginProps> = (props) => {
 
       <main className="flex w-full flex-1 flex-col items-center justify-center px-20 text-center">
         <div>
-          {payload}
+          <div>
+            
+          </div>
         </div>
       </main>
     </div>
