@@ -19,15 +19,14 @@ const Home: FC<IHomeProps> = (props) => {
       {/* Header */}
       <Header />
       <main className="flex w-full flex-1 flex-col items-center justify-center px-20 text-center">
-        <div>
-          {payload}
-        </div>
+        <div>{payload}</div>
       </main>
     </div>
   );
 };
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  // console.log(ctx)
   return { props: ctx.query };
 };
 
