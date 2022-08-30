@@ -6,6 +6,7 @@ import { ServerModule } from './server.module';
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(ServerModule);
   const configService: ConfigService = app.get(ConfigService);
+  app.enableCors();
 
   // serving static files
   app.useStaticAssets('src/client/public', {
