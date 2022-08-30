@@ -5,29 +5,19 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 
 type IHomeProps = {
-  payload: any;
+  is_logged_in: boolean;
 };
 
-const Home: FC<IHomeProps> = () => {
-  // const [users, setUsers] = useState([]);
-
-  // useEffect(() => {
-  //   const listUser = async () => {
-  //     const response = await fetch('api/listUser');
-  //     const data = await response.json();
-  //     setUsers(data.records);
-  //   };
-  //   listUser().catch(console.error);
-  // }, []);
-
-  // const { payload } = props;
+const Home: FC<IHomeProps> = ({ is_logged_in }) => {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center py-2">
       <Head>
         <title>Create Nest Next App</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Header />
+
+      <Header isLoggedIn={is_logged_in} />
+
       <main className="flex w-full flex-1 flex-col items-center justify-center text-center">
         <div id="home">
           <img
@@ -78,17 +68,6 @@ const Home: FC<IHomeProps> = () => {
             </div>
           </div>
         </div>
-        {/* <div>
-          {users &&
-            users.map((val, i) => {
-              return (
-                <Fragment key={i}>
-                  <div className="w-10 bg-black">Email : {val.email}</div>
-                  <div>User name : {val.username}</div>
-                </Fragment>
-              );
-            })}
-        </div> */}
         <Footer />
       </main>
     </div>
