@@ -1,9 +1,7 @@
-/* eslint-disable @next/next/no-img-element */
-
 function Footer() {
   return (
     <footer>
-      <div className="flex bg-white items-center mt-10 py-8 space-x-2 md:space-x-10">
+      <div className="mt-10 flex items-center space-x-2 bg-white py-8 md:space-x-10">
         Copyright©2022. Medex. All Rights Reserved.
       </div>
     </footer>

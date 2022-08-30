@@ -1,5 +1,4 @@
-/* eslint-disable @next/next/no-img-element */
-import { FC, Fragment, useEffect, useState } from 'react';
+import { FC } from 'react';
 import Head from 'next/head';
 import type { GetServerSideProps } from 'next';
 import Header from '../components/Header';
@@ -10,16 +9,16 @@ type IHomeProps = {
 };
 
 const Home: FC<IHomeProps> = () => {
-  const [users, setUsers] = useState([]);
+  // const [users, setUsers] = useState([]);
 
-  useEffect(() => {
-    const listUser = async () => {
-      const response = await fetch('api/listUser');
-      const data = await response.json();
-      setUsers(data.records);
-    };
-    listUser().catch(console.error);
-  }, []);
+  // useEffect(() => {
+  //   const listUser = async () => {
+  //     const response = await fetch('api/listUser');
+  //     const data = await response.json();
+  //     setUsers(data.records);
+  //   };
+  //   listUser().catch(console.error);
+  // }, []);
 
   // const { payload } = props;
   return (
@@ -39,19 +38,19 @@ const Home: FC<IHomeProps> = () => {
         </div>
         <div id="about" className="w-4/5">
           <div className="w-full">
-            <div className="text-4xl text-blue-900 font-semibold ">
+            <div className="text-4xl font-semibold text-blue-900 ">
               Platform persiapan UKMPPD berbasis teknologi pertama dan terbesar
               di indonesia
             </div>
-            <div className="text-xl text-gray-500 font-normal mt-2">
+            <div className="mt-2 text-xl font-normal text-gray-500">
               Akses belajar seru dan efektif dengan program Tryout online dan
               bimbel online untuk persiapan UKMPPD dengan kualitas terbaik dan
               terpercaya
             </div>
           </div>
           <div className="flex justify-between pt-10">
-            <div className="rounded-lg p-10 w-80 align text-left shadow-xl">
-              <div className="text-2xl text-black font-semibold">
+            <div className="align w-80 rounded-lg p-10 text-left shadow-xl">
+              <div className="text-2xl font-semibold text-black">
                 Apa itu Medex?
               </div>
               <div className="pt-2 text-xl text-gray-500">
@@ -59,8 +58,8 @@ const Home: FC<IHomeProps> = () => {
                 pertama di indonesia, yang membantu Kamu siap UKMPPD
               </div>
             </div>
-            <div className="rounded-lg p-10 w-80 align text-left shadow-xl">
-              <div className="text-2xl text-black font-semibold">
+            <div className="align w-80 rounded-lg p-10 text-left shadow-xl">
+              <div className="text-2xl font-semibold text-black">
                 Tonton Video
               </div>
               <div className="pt-2 text-xl text-gray-500">
@@ -68,8 +67,8 @@ const Home: FC<IHomeProps> = () => {
                 kedokteran yang sudah di rancang khusus melalui video online
               </div>
             </div>
-            <div className="rounded-lg p-10 w-80 align text-left shadow-xl">
-              <div className="text-2xl text-black font-semibold">
+            <div className="align w-80 rounded-lg p-10 text-left shadow-xl">
+              <div className="text-2xl font-semibold text-black">
                 Tryout Online
               </div>
               <div className="pt-2 text-xl text-gray-500">
