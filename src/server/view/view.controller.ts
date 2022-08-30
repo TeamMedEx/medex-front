@@ -18,16 +18,10 @@ export class ViewController {
   @Get('/')
   public async showHome(@Req() req: Request, @Res() res: Response) {
     const parsedUrl = parse(req.url, true);
-    const customProps = { payload: 'Hello World!' };
 
     await this.viewService
       .getNextServer()
-      .render(
-        req,
-        res,
-        parsedUrl.pathname,
-        Object.assign(parsedUrl.query, customProps),
-      );
+      .render(req, res, parsedUrl.pathname, parsedUrl.query);
   }
 
   @Get('/login')

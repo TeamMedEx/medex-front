@@ -1,16 +1,38 @@
-import { FC } from 'react';
+import axios from 'axios';
+import { ChangeEvent, FC, FormEvent, useState } from 'react';
 import Head from 'next/head';
 import type { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 
-type ILoginProps = {
-  payload: any;
-};
+// shared DTO
+import { AuthLoginDTO } from '../../shared/dtos/auth-login.dto';
 
-const Login: FC<ILoginProps> = (props) => {
+const Login: FC = () => {
   const router = useRouter();
 
-  const { payload } = props;
+  const [auth, setAuth] = useState<AuthLoginDTO>({
+    username: '',
+    password: '',
+  });
+
+  const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    setAuth({ ...auth, [e.target.id]: e.target.value });
+  };
+
+  const onSubmitHandler = async (e: FormEvent<HTMLInputElement>) => {
+    e.preventDefault();
+
+    // send request to API
+    await axios('api/auth/login', {
+      method: 'POST',
+      data: auth,
+    });
+
+    const flag = true; // replace flag with response status from API
+    if (flag)
+      router.replace({ pathname: '/', query: { is_logged_in: flag } }, '/');
+  };
+
   return (
     <div className="flex min-h-screen flex-col items-center justify-center py-2">
       <Head>
@@ -29,7 +51,7 @@ const Login: FC<ILoginProps> = (props) => {
               onClick={() => router.push('/')}
             />
           </div>
-          <div className="mt-4">
+          <div className="mt-4" onSubmit={onSubmitHandler}>
             <form className="mb-4 rounded bg-white px-8 pt-6 pb-8 shadow-md">
               <div className="text-2xl font-semibold text-blue-900">
                 Masuk untuk melanjutkan ke Med-ex!
@@ -55,6 +77,8 @@ const Login: FC<ILoginProps> = (props) => {
                   id="username"
                   type="text"
                   placeholder="Username"
+                  value={auth.username}
+                  onChange={onChangeHandler}
                 />
               </div>
               <div className="mb-6">
@@ -70,6 +94,8 @@ const Login: FC<ILoginProps> = (props) => {
                   id="password"
                   type="password"
                   placeholder="******************"
+                  value={auth.password}
+                  onChange={onChangeHandler}
                 />
                 {/* <p className="text-red-500 text-xs italic">
                   Please choose a password.
@@ -78,7 +104,7 @@ const Login: FC<ILoginProps> = (props) => {
               <div className="flex items-center justify-between">
                 <button
                   className="focus:shadow-outline rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700 focus:outline-none"
-                  type="button"
+                  type="submit"
                 >
                   Masuk
                 </button>

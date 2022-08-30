@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 
-function Header() {
+function Header({ isLoggedIn }) {
   const router = useRouter();
 
   return (
@@ -23,7 +23,11 @@ function Header() {
           <li className="customClass">FAQ</li>
         </ul>
       </div>
-      <div className="flex items-center space-x-2 md:space-x-10">
+      <div
+        className={`flex items-center space-x-2 md:space-x-10 ${
+          isLoggedIn ? 'invisible' : 'visible'
+        }`}
+      >
         <ul className="hidden space-x-4 md:flex">
           <li className="customClass" onClick={() => router.push('/login')}>
             Login
