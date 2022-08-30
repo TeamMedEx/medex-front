@@ -45,6 +45,21 @@ export class ViewController {
       );
   }
 
+  @Get('/register')
+  public async showRegister(@Req() req: Request, @Res() res: Response) {
+    const parsedUrl = parse(req.url, true);
+    const customProps = { payload: 'props for register' };
+
+    await this.viewService
+      .getNextServer()
+      .render(
+        req,
+        res,
+        parsedUrl.pathname,
+        Object.assign(parsedUrl.query, customProps),
+      );
+  }
+
   @Get('_next*')
   public async assets(@Req() req: Request, @Res() res: Response) {
     const parsedUrl = parse(req.url, true);
