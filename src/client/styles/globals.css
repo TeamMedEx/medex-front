@@ -18,3 +18,7 @@
     @apply cursor-pointer text-sm font-normal text-[#3c3b3b] hover:text-[#7a7a7a];
   }
 }
+
+html {
+  scroll-behavior: smooth;
+}
