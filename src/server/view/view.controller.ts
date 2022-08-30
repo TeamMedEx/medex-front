@@ -33,7 +33,7 @@ export class ViewController {
   @Get('/login')
   public async showLogin(@Req() req: Request, @Res() res: Response) {
     const parsedUrl = parse(req.url, true);
-    const customProps = { payload: this.appService.getHello() };
+    const customProps = { payload: 'props for login' };
 
     await this.viewService
       .getNextServer()
