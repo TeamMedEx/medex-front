@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import { useRouter } from 'next/router';
 
 function Header() {
@@ -6,7 +5,7 @@ function Header() {
 
   return (
     <header className="bg-white">
-      <div className="flex bg-white items-center space-x-2 md:space-x-10">
+      <div className="flex items-center space-x-2 bg-white md:space-x-10">
         <img
           src="/medex-logo-1.svg"
           width={100}
