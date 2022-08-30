@@ -34,6 +34,21 @@ export class ViewController {
       );
   }
 
+  @Get('/login')
+  public async showLogin(@Req() req: Request, @Res() res: Response) {
+    const parsedUrl = parse(req.url, true);
+    const customProps = { payload: this.appService.getHello() };
+
+    await this.viewService
+      .getNextServer()
+      .render(
+        req,
+        res,
+        parsedUrl.pathname,
+        Object.assign(parsedUrl.query, customProps),
+      );
+  }
+
   @Get('_next*')
   public async assets(@Req() req: Request, @Res() res: Response) {
     const parsedUrl = parse(req.url, true);
