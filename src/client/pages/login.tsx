@@ -10,22 +10,23 @@ import { BaseResponse } from '../../shared/base-response';
 const Login: FC = () => {
   const router = useRouter();
 
-  const [auth, setAuth] = useState<AuthLoginDTO>({
+  const [dataLogin, setDataLogin] = useState<AuthLoginDTO>({
     username: '',
     password: '',
   });
 
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    setAuth({ ...auth, [e.target.id]: e.target.value });
+    setDataLogin({ ...dataLogin, [e.target.id]: e.target.value });
   };
 
   const onSubmitHandler = async (e: FormEvent<HTMLInputElement>) => {
     e.preventDefault();
 
     // send request to API
-    const { data } = await axios.post<BaseResponse>('api/auth/login', {
-      data: auth,
-    });
+    const { data } = await axios.post<BaseResponse>(
+      'api/auth/login',
+      dataLogin,
+    );
 
     if (data.meta.status == 200) {
       router.replace(
@@ -77,7 +78,7 @@ const Login: FC = () => {
                   id="username"
                   type="text"
                   placeholder="Username"
-                  value={auth.username}
+                  value={dataLogin.username}
                   onChange={onChangeHandler}
                 />
               </div>
@@ -94,7 +95,7 @@ const Login: FC = () => {
                   id="password"
                   type="password"
                   placeholder="******************"
-                  value={auth.password}
+                  value={dataLogin.password}
                   onChange={onChangeHandler}
                 />
                 {/* <p className="text-red-500 text-xs italic">

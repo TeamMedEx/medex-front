@@ -1,17 +1,21 @@
 import { Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
-import { AuthLoginDTO, AuthRegisterDTO } from 'src/shared/dtos';
+
+// local dependencies
+import { MedexResponse } from '../common/base-response';
 import { AuthServiceImpl } from '../common/contracts';
 import { BaseResponse } from 'src/shared/base-response';
+import { AuthLoginDTO, AuthRegisterDTO } from 'src/shared/dtos';
 
 @Injectable()
-export class AuthService implements AuthServiceImpl {
+export class AuthService extends MedexResponse implements AuthServiceImpl {
   constructor(
-    private configService: ConfigService,
-    private httpService: HttpService,
-  ) {}
-
+    private readonly configService: ConfigService,
+    private readonly httpService: HttpService,
+  ) {
+    super();
+  }
   async medexLogin(payload: AuthLoginDTO): Promise<BaseResponse> {
     try {
       const { data } = await this.httpService.axiosRef({
@@ -19,9 +23,9 @@ export class AuthService implements AuthServiceImpl {
         url: this.configService.get<string>('MEDEX_LOGIN_URI'),
         data: payload,
       });
-      return data as BaseResponse;
+      return data;
     } catch (error) {
-      return error;
+      return error.response?.data ? error.response.data : this.baseResponse;
     }
   }
 
@@ -32,9 +36,9 @@ export class AuthService implements AuthServiceImpl {
         url: this.configService.get<string>('MEDEX_REGISTER_URI'),
         data: payload,
       });
-      return data as BaseResponse;
+      return data;
     } catch (error) {
-      return error;
+      return error.response?.data ? error.response.data : this.baseResponse;
     }
   }
 }

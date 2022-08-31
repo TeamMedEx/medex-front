@@ -28,9 +28,10 @@ const Login: FC<ILoginProps> = () => {
     e.preventDefault();
 
     // send request to API
-    const { data } = await axios.post<BaseResponse>('api/auth/register', {
-      data: dataRegister,
-    });
+    const { data } = await axios.post<BaseResponse>(
+      'api/auth/register',
+      dataRegister,
+    );
 
     if (data.meta.status == 200) {
       router.replace(
