@@ -1,5 +1,5 @@
-import { Controller, Inject, Post, Req, Res } from '@nestjs/common';
-import { Request, Response } from 'express';
+import { Controller, Inject, Post, Req } from '@nestjs/common';
+import { Request } from 'express';
 import { AuthLoginDTO, AuthRegisterDTO } from 'src/shared/dtos';
 import { AuthServiceImpl } from '../common/contracts';
 import { TYPES } from '../common/type';
@@ -12,16 +12,14 @@ export class AuthController {
   ) {}
 
   @Post('login')
-  async login(@Req() req: Request, @Res() res: Response) {
-    const payload: AuthLoginDTO = req.body;
-    const data = await this.authService.medexLogin(payload);
-    return res.json(data);
+  async login(@Req() req: Request) {
+    const dto: AuthLoginDTO = req.body;
+    return await this.authService.medexLogin(dto);
   }
 
   @Post('register')
-  async register(@Req() req: Request, @Res() res: Response) {
-    const payload: AuthRegisterDTO = req.body;
-    const data = await this.authService.medexRegister(payload);
-    return res.json(data);
+  async register(@Req() req: Request) {
+    const dto: AuthRegisterDTO = req.body;
+    return await this.authService.medexRegister(dto);
   }
 }
