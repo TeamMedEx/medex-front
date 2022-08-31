@@ -22,3 +22,7 @@
 html {
   scroll-behavior: smooth;
 }
+
+.bg-green-teal {
+  background-color: #079A92;
+}
