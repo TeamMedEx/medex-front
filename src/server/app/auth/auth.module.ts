@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TYPES } from '../common/type';
 import { AxiosModule } from '../custom/axios.module';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
@@ -10,12 +11,17 @@ import { AuthService } from './auth.service';
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => ({
-        baseURL: configService.get<string>('MEDEX_API_URI'),
+        baseURL: configService.get<string>('MEDEX_BASEAPI_URI'),
       }),
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService],
-  exports: [AuthService],
+  providers: [
+    {
+      provide: TYPES.service.AuthService,
+      useClass: AuthService,
+    },
+  ],
+  exports: [TYPES.service.AuthService],
 })
 export class AuthModule {}
