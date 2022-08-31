@@ -1,11 +1,11 @@
 import axios from 'axios';
 import { ChangeEvent, FC, FormEvent, useState } from 'react';
-import Head from 'next/head';
 import type { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 
-// shared DTO
-import { AuthLoginDTO } from '../../shared/dtos/auth-login.dto';
+// shared module
+import { AuthLoginDTO } from '../../shared/dtos';
+import { BaseResponse } from '../../shared/base-response';
 
 const Login: FC = () => {
   const router = useRouter();
@@ -23,23 +23,23 @@ const Login: FC = () => {
     e.preventDefault();
 
     // send request to API
-    await axios('api/auth/login', {
-      method: 'POST',
+    const { data } = await axios.post<BaseResponse>('api/auth/login', {
       data: auth,
     });
 
-    const flag = true; // replace flag with response status from API
-    if (flag)
-      router.replace({ pathname: '/', query: { is_logged_in: flag } }, '/');
+    if (data.meta.status == 200) {
+      router.replace(
+        {
+          pathname: '/',
+          query: { is_logged_in: true },
+        },
+        '/',
+      );
+    }
   };
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center py-2">
-      <Head>
-        <title>Medical Exam Platform</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
       <main className="flex w-full flex-1 flex-col items-center justify-center px-20 text-center">
         <div className="w-2/5">
           <div className="flex justify-center">
