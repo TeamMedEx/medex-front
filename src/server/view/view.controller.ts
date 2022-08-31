@@ -54,6 +54,21 @@ export class ViewController {
       );
   }
 
+  @Get('/dashboard')
+  public async showDashboard(@Req() req: Request, @Res() res: Response) {
+    const parsedUrl = parse(req.url, true);
+    const customProps = { payload: 'props for dashboard' };
+
+    await this.viewService
+      .getNextServer()
+      .render(
+        req,
+        res,
+        parsedUrl.pathname,
+        Object.assign(parsedUrl.query, customProps),
+      );
+  }
+
   @Get('_next*')
   public async assets(@Req() req: Request, @Res() res: Response) {
     const parsedUrl = parse(req.url, true);
