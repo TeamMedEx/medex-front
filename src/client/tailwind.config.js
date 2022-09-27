@@ -7,5 +7,5 @@ module.exports = {
     path.join(__dirname, './components/**/*.{js,ts,jsx,tsx}'),
   ],
   theme: {},
-  plugins: [],
+  plugins: [require('daisyui')],
 };

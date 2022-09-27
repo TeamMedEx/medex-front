@@ -18,7 +18,7 @@ const Dashboard: FC<IDashboardProps> = () => {
       </Head>
 
       <main className="h-full w-full">
-        <div className="flex h-5/6 w-full">
+        <div className="flex h-full w-full">
           <div className="w-3/12">
             <div className="mt-5 flex justify-center">
               <img
@@ -30,35 +30,118 @@ const Dashboard: FC<IDashboardProps> = () => {
               />
             </div>
             <div>
-              <ul className='mt-10 ml-5'>
-                <li className='text-lg font-semibold px-5 py-2'>BERANDA</li>
-                <li className='text-lg font-semibold px-5 py-2'>HISTORY</li>
-                <li className='text-lg font-semibold px-5 py-2'>TRANSAKSI</li>
-                <li className='text-lg font-semibold px-5 py-2'>PROFIL</li>
-                <li className='text-lg font-semibold px-5 py-2'>LOGOUT</li>
+              <ul className="mt-10 ml-5">
+                <li className="px-5 py-2 text-lg font-semibold">BERANDA</li>
+                <li className="px-5 py-2 text-lg font-semibold">HISTORY</li>
+                <li className="px-5 py-2 text-lg font-semibold">TRANSAKSI</li>
+                <li className="px-5 py-2 text-lg font-semibold">PROFIL</li>
+                <li className="px-5 py-2 text-lg font-semibold">LOGOUT</li>
               </ul>
             </div>
           </div>
           <div className="w-9/12">
             <div className="flex h-16 items-center justify-end">
-              <div className='flex'>
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-yellow-300 p-1">
-                  <img
-                    src="/medex-logo-1.svg"
-                    className="cursor-pointer object-contain"
-                  />
+              <div className="flex">
+                <div className="avatar">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-base-300">
+                    <img
+                      src="/medex-logo-1.svg"
+                      className="cursor-pointer !object-contain"
+                    />
+                  </div>
                 </div>
                 <div className="flex items-center justify-center px-2 font-semibold">
                   John Doe
                 </div>
               </div>
             </div>
-            {/* #079A92 */}
-            <div className="bg-green-teal flex h-full w-full justify-center">
-              <img
-                src="/image/small-underconstruction.png"
-                className="cursor-pointer object-contain"
-              />
+            <div className="bg-green-teal h-full w-full grid-cols-3 overflow-y-auto">
+              <div className="grid grid-cols-3 gap-4 p-4">
+                <div className="card image-full card-compact h-52 w-full bg-base-100 shadow-xl">
+                  <figure>
+                    <img src="/image/bg-exam-medex.png" alt="Shoes" />
+                  </figure>
+                  <div className="card-body justify-between">
+                    <h2 className="card-title">Paket Tryout 11 Juli 2022</h2>
+                    <div className="flex">
+                      <p>
+                        Jumlah soal : 200 <br />
+                        Durasi : 200 Menit <br />
+                      </p>
+                      <p>
+                        Member : Gold <br />
+                        Limit : 2
+                      </p>
+                    </div>
+                    <div className="card-actions items-end justify-center">
+                      <button className="btn btn-primary">Mulai</button>
+                    </div>
+                  </div>
+                </div>
+                <div className="card image-full card-compact h-52 w-full bg-base-100 shadow-xl">
+                  <figure>
+                    <img src="/image/bg-exam-medex-1.jpg" alt="Shoes" />
+                  </figure>
+                  <div className="card-body justify-between">
+                    <h2 className="card-title">Paket Tryout 11 Juli 2022</h2>
+                    <div className="flex">
+                      <p>
+                        Jumlah soal : 200 <br />
+                        Durasi : 200 Menit <br />
+                      </p>
+                      <p>
+                        Member : Gold <br />
+                        Limit : 2
+                      </p>
+                    </div>
+                    <div className="card-actions items-end justify-center">
+                      <button className="btn btn-primary">Mulai</button>
+                    </div>
+                  </div>
+                </div>
+                <div className="card image-full card-compact h-52 w-full bg-base-100 shadow-xl">
+                  <figure>
+                    <img src="/image/bg-exam-medex-2.jpg" alt="Shoes" />
+                  </figure>
+                  <div className="card-body justify-between">
+                    <h2 className="card-title">Paket Tryout 11 Juli 2022</h2>
+                    <div className="flex">
+                      <p>
+                        Jumlah soal : 200 <br />
+                        Durasi : 200 Menit <br />
+                      </p>
+                      <p>
+                        Member : Gold <br />
+                        Limit : 2
+                      </p>
+                    </div>
+                    <div className="card-actions items-end justify-center">
+                      <button className="btn btn-primary">Mulai</button>
+                    </div>
+                  </div>
+                </div>
+                <div className="card image-full card-compact h-52 w-full bg-base-100 shadow-xl">
+                  <figure>
+                    <img src="/image/bg-exam-medex-3.jpg" alt="Shoes" />
+                  </figure>
+                  <div className="card-body justify-between">
+                    <h2 className="card-title">Paket Tryout 11 Juli 2022</h2>
+                    <div className="flex">
+                      <p>
+                        Jumlah soal : 200 <br />
+                        Durasi : 200 Menit <br />
+                      </p>
+                      <p>
+                        Member : Gold <br />
+                        Limit : 2
+                      </p>
+                    </div>
+                    <div className="card-actions items-end justify-center">
+                      <button className="btn btn-primary">Mulai</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
