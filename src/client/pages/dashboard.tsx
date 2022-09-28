@@ -10,6 +10,7 @@ type IDashboardProps = {
 
 const Dashboard: FC<IDashboardProps> = () => {
   const router = useRouter();
+
   return (
     <div className="h-screen">
       <Head>
@@ -18,12 +19,12 @@ const Dashboard: FC<IDashboardProps> = () => {
       </Head>
 
       <main className="h-full w-full">
-        <div className="flex h-full w-full">
+        <div className="flex w-full">
           <div className="w-3/12">
             <div className="mt-5 flex justify-center">
               <img
                 src="/medex-logo-1.svg"
-                width={200}
+                width={150}
                 height={100}
                 className="cursor-pointer object-contain"
                 onClick={() => router.push('/')}
@@ -57,7 +58,7 @@ const Dashboard: FC<IDashboardProps> = () => {
             </div>
             <div className="bg-green-teal h-full w-full grid-cols-3 overflow-y-auto">
               <div className="grid grid-cols-3 gap-4 p-4">
-                <div className="card image-full card-compact h-52 w-full bg-base-100 shadow-xl">
+                <div className="card-compact card image-full h-52 w-full bg-base-100 shadow-xl">
                   <figure>
                     <img src="/image/bg-exam-medex.png" alt="Shoes" />
                   </figure>
@@ -74,11 +75,16 @@ const Dashboard: FC<IDashboardProps> = () => {
                       </p>
                     </div>
                     <div className="card-actions items-end justify-center">
-                      <button className="btn btn-primary">Mulai</button>
+                      <button
+                        className="btn btn-primary"
+                        onClick={() => router.push('/tryout')}
+                      >
+                        Mulai
+                      </button>
                     </div>
                   </div>
                 </div>
-                <div className="card image-full card-compact h-52 w-full bg-base-100 shadow-xl">
+                <div className="card-compact card image-full h-52 w-full bg-base-100 shadow-xl">
                   <figure>
                     <img src="/image/bg-exam-medex-1.jpg" alt="Shoes" />
                   </figure>
@@ -95,11 +101,16 @@ const Dashboard: FC<IDashboardProps> = () => {
                       </p>
                     </div>
                     <div className="card-actions items-end justify-center">
-                      <button className="btn btn-primary">Mulai</button>
+                      <button
+                        className="btn btn-primary"
+                        onClick={() => router.push('/tryout')}
+                      >
+                        Mulai
+                      </button>
                     </div>
                   </div>
                 </div>
-                <div className="card image-full card-compact h-52 w-full bg-base-100 shadow-xl">
+                <div className="card-compact card image-full h-52 w-full bg-base-100 shadow-xl">
                   <figure>
                     <img src="/image/bg-exam-medex-2.jpg" alt="Shoes" />
                   </figure>
@@ -116,11 +127,16 @@ const Dashboard: FC<IDashboardProps> = () => {
                       </p>
                     </div>
                     <div className="card-actions items-end justify-center">
-                      <button className="btn btn-primary">Mulai</button>
+                      <button
+                        className="btn btn-primary"
+                        onClick={() => router.push('/tryout')}
+                      >
+                        Mulai
+                      </button>
                     </div>
                   </div>
                 </div>
-                <div className="card image-full card-compact h-52 w-full bg-base-100 shadow-xl">
+                <div className="card-compact card image-full h-52 w-full bg-base-100 shadow-xl">
                   <figure>
                     <img src="/image/bg-exam-medex-3.jpg" alt="Shoes" />
                   </figure>
@@ -137,15 +153,20 @@ const Dashboard: FC<IDashboardProps> = () => {
                       </p>
                     </div>
                     <div className="card-actions items-end justify-center">
-                      <button className="btn btn-primary">Mulai</button>
+                      <button
+                        className="btn btn-primary"
+                        onClick={() => router.push('/tryout')}
+                      >
+                        Mulai
+                      </button>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
+            <Footer />
           </div>
         </div>
-        <Footer />
       </main>
     </div>
   );
