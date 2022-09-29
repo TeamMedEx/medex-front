@@ -1,17 +1,55 @@
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import Head from 'next/head';
 import Footer from '../components/Footer';
 import { useRouter } from 'next/router';
+import { Countdown } from 'react-daisyui';
 
 type ITryoutProps = {
   is_logged_in: boolean;
 };
 
 const Tryout: FC<ITryoutProps> = () => {
+  const [hoursTime, setHoursTime] = useState(0);
+  const [minutesTime, setMinutesTime] = useState(0);
+  const [secondsTime, setSecondsTime] = useState(0);
   const router = useRouter();
 
+  useEffect(() => {
+    countDownTimer();
+  }, []);
+
+  let myTimer;
+  const countDownTimer = () => {
+    myTimer = setInterval(myClock, 1000);
+    let c = 3610; //Initially set to 1 hour
+    const initMinute = ((c - (c % 60)) / 60) % 60;
+    setMinutesTime(initMinute);
+    setHoursTime(((c - (c % 60)) / 60 - initMinute) / 60);
+
+    function myClock() {
+      --c;
+      const seconds = c % 60; // Seconds that cannot be written in minutes
+      const secondsInMinutes = (c - seconds) / 60; // Gives the seconds that COULD be given in minutes
+      const minutes = secondsInMinutes % 60; // Minutes that cannot be written in hours
+      const hours = (secondsInMinutes - minutes) / 60;
+      // Now in hours, minutes and seconds, you have the time you need.
+      console.clear();
+      console.log(hours + ':' + minutes + ':' + seconds);
+      setSecondsTime(seconds);
+      if (seconds == 59) {
+        setMinutesTime(minutes);
+      }
+      if (minutes == 59) {
+        setHoursTime(hours);
+      }
+      if (c == 0) {
+        clearInterval(myTimer);
+      }
+    }
+  };
+
   const paginationBottom = () => {
-    let totalPage = [];
+    const totalPage = [];
     for (let index = 0; index < 100; index++) {
       if (index == 4) {
         totalPage.push(
@@ -164,23 +202,26 @@ const Tryout: FC<ITryoutProps> = () => {
                 </div>
                 {/* <div className="text-2xl font-semibold">3:10:22</div> */}
                 <div className="grid auto-cols-max grid-flow-col gap-5 text-center">
-                  <div className="rounded-box flex flex-col bg-rose-700	 p-2 text-neutral-content">
-                    <span className="countdown font-mono text-5xl">
-                      <span style={{ '--value': 3 }}></span>
-                    </span>
-                    jam
+                  <div className="rounded-box flex flex-col bg-rose-700 p-2 text-neutral-content">
+                    <Countdown
+                      className="font-mono text-5xl"
+                      value={hoursTime}
+                    />
+                    hours
                   </div>
-                  <div className="rounded-box flex flex-col bg-rose-700	 p-2 text-neutral-content">
-                    <span className="countdown font-mono text-5xl">
-                      <span style={{ '--value': 24 }}></span>
-                    </span>
-                    menit
+                  <div className="rounded-box flex flex-col bg-rose-700 p-2 text-neutral-content">
+                    <Countdown
+                      className="font-mono text-5xl"
+                      value={minutesTime}
+                    />
+                    min
                   </div>
-                  <div className="rounded-box flex flex-col bg-rose-700	 p-2 text-neutral-content">
-                    <span className="countdown font-mono text-5xl">
-                      <span style={{ '--value': 47 }}></span>
-                    </span>
-                    detik
+                  <div className="rounded-box flex flex-col bg-rose-700 p-2 text-neutral-content">
+                    <Countdown
+                      className="font-mono text-5xl"
+                      value={secondsTime}
+                    />
+                    sec
                   </div>
                 </div>
               </div>
