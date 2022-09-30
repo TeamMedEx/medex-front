@@ -3,6 +3,7 @@ import Head from 'next/head';
 import type { GetServerSideProps } from 'next';
 import Footer from '../components/Footer';
 import { useRouter } from 'next/router';
+import { getSession } from 'next-auth/react';
 
 type IDashboardProps = {
   is_logged_in: boolean;
@@ -10,6 +11,7 @@ type IDashboardProps = {
 
 const Dashboard: FC<IDashboardProps> = () => {
   const router = useRouter();
+  getSession().then((res) => console.log(res));
 
   return (
     <div className="h-screen">

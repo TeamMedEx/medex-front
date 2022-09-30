@@ -3,13 +3,13 @@ import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
 
 // local dependencies
-import { MedexResponse } from '../common/base-response';
-import { AuthServiceImpl } from '../common/contracts';
+import { Medex } from '../../common/models';
+import { IAuthService } from '../../common/interfaces';
 import { BaseResponse } from 'src/shared/base-response';
 import { AuthLoginDTO, AuthRegisterDTO } from 'src/shared/dtos';
 
 @Injectable()
-export class AuthService extends MedexResponse implements AuthServiceImpl {
+export class AuthService extends Medex implements IAuthService {
   constructor(
     private readonly configService: ConfigService,
     private readonly httpService: HttpService,

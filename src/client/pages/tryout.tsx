@@ -196,7 +196,7 @@ const Tryout: FC<ITryoutProps> = () => {
               </div>
             </div>
             <div className="h-full w-full">
-              <div className="flex grid grid-cols-3 items-center">
+              <div className="grid grid-cols-3 items-center">
                 <div className="text-2xl font-semibold">
                   Tryout Paket 11 Juli 2022
                 </div>

@@ -74,9 +74,8 @@ const Home: FC<IHomeProps> = ({ is_logged_in }) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  console.log(ctx.query);
-  return { props: ctx.query };
+export const getServerSideProps: GetServerSideProps = async () => {
+  return { props: {} };
 };
 
 export default Home;

@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { TYPES } from '../common/type';
-import { AxiosModule } from '../custom/axios.module';
+import { TYPES } from '../../common/type';
+import { AxiosModule } from '../../common/providers';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 

@@ -1,14 +1,14 @@
 import { Controller, Inject, Post, Req } from '@nestjs/common';
 import { Request } from 'express';
 import { AuthLoginDTO, AuthRegisterDTO } from 'src/shared/dtos';
-import { AuthServiceImpl } from '../common/contracts';
-import { TYPES } from '../common/type';
+import { IAuthService } from '../../common/interfaces';
+import { TYPES } from '../../common/type';
 
-@Controller('auth')
+@Controller('_auth')
 export class AuthController {
   constructor(
     @Inject(TYPES.service.AuthService)
-    private authService: AuthServiceImpl,
+    private authService: IAuthService,
   ) {}
 
   @Post('login')

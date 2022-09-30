@@ -1,11 +1,10 @@
-import axios from 'axios';
-import { ChangeEvent, FC, FormEvent, useState } from 'react';
+import { ChangeEvent, type FC, FormEvent, useState } from 'react';
 import type { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
+import { signIn } from 'next-auth/react';
 
 // shared module
 import { AuthLoginDTO } from '../../shared/dtos';
-import { BaseResponse } from '../../shared/base-response';
 
 const Login: FC = () => {
   const router = useRouter();
@@ -22,21 +21,17 @@ const Login: FC = () => {
   const onSubmitHandler = async (e: FormEvent<HTMLInputElement>) => {
     e.preventDefault();
 
-    // send request to API
-    const { data } = await axios.post<BaseResponse>(
-      'api/auth/login',
-      dataLogin,
-    );
-
-    if (data.meta.status == 200) {
-      router.replace(
-        {
-          pathname: '/',
-          query: { is_logged_in: true },
-        },
-        '/',
-      );
+    const res = await signIn('credentials', {
+      username: dataLogin.username,
+      password: dataLogin.password,
+      callbackUrl: `${window.location.origin}/dashboard`,
+      redirect: false,
+    });
+    if (!res.ok) {
+      setDataLogin({ username: '', password: '' });
     }
+    // replace route to dashboard
+    router.replace({ pathname: '/dashboard' });
   };
 
   return (
@@ -124,8 +119,10 @@ const Login: FC = () => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  return { props: ctx.query };
+export const getServerSideProps: GetServerSideProps = async () => {
+  return {
+    props: {},
+  };
 };
 
 export default Login;
