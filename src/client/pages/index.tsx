@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { NextPage } from 'next';
 import Head from 'next/head';
 import type { GetServerSideProps } from 'next';
 import Header from '../components/Header';
@@ -8,7 +8,7 @@ type IHomeProps = {
   is_logged_in: boolean;
 };
 
-const Home: FC<IHomeProps> = ({ is_logged_in }) => {
+const Home: NextPage<IHomeProps> = ({ is_logged_in }) => {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center py-2">
       <Head>
