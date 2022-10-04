@@ -6,20 +6,20 @@ import { TYPES } from '../../common/type';
 
 @Controller('_auth')
 export class AuthController {
-  constructor(
-    @Inject(TYPES.service.AuthService)
-    private authService: IAuthService,
-  ) {}
+    constructor(
+        @Inject(TYPES.service.AuthService)
+        private authService: IAuthService,
+    ) {}
 
-  @Post('login')
-  async login(@Req() req: Request) {
-    const dto: AuthLoginDTO = req.body;
-    return await this.authService.medexLogin(dto);
-  }
+    @Post('login')
+    async login(@Req() req: Request) {
+        const dto: AuthLoginDTO = req.body;
+        return await this.authService.medexLogin(dto);
+    }
 
-  @Post('register')
-  async register(@Req() req: Request) {
-    const dto: AuthRegisterDTO = req.body;
-    return await this.authService.medexRegister(dto);
-  }
+    @Post('register')
+    async register(@Req() req: Request) {
+        const dto: AuthRegisterDTO = req.body;
+        return await this.authService.medexRegister(dto);
+    }
 }
