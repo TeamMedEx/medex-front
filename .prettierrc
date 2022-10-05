@@ -1,5 +1,7 @@
 {
   "singleQuote": true,
   "trailingComma": "all",
-  "tailwindConfig": "./src/client/tailwind.config.js"
+  "tailwindConfig": "./src/client/tailwind.config.js",
+  "tabWidth": 4,
+  "bracketSameLine": false
 }
