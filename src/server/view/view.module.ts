@@ -6,13 +6,13 @@ import { ViewController } from './view.controller';
 import { ViewService } from './view.service';
 
 @Module({
-  providers: [
-    {
-      provide: APP_FILTER,
-      useClass: NextExceptionFilter,
-    },
-    ViewService,
-  ],
-  controllers: [ViewController],
+    providers: [
+        {
+            provide: APP_FILTER,
+            useClass: NextExceptionFilter,
+        },
+        ViewService,
+    ],
+    controllers: [ViewController],
 })
 export class ViewModule {}

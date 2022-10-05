@@ -5,24 +5,25 @@ import { NextServer } from 'next/dist/server/next';
 
 @Injectable()
 export class ViewService implements OnModuleInit {
-  private server: NextServer;
-  private logger = new Logger(ViewService.name);
+    private server: NextServer;
+    private logger = new Logger(ViewService.name);
 
-  constructor(private configService: ConfigService) {}
+    constructor(private configService: ConfigService) {}
 
-  async onModuleInit(): Promise<void> {
-    try {
-      this.server = createServer({
-        dev: this.configService.get<string>('NODE_ENV') !== 'production',
-        dir: './src/client',
-      });
-      await this.server.prepare();
-    } catch (error) {
-      this.logger.error(error);
+    async onModuleInit(): Promise<void> {
+        try {
+            this.server = createServer({
+                dev:
+                    this.configService.get<string>('NODE_ENV') !== 'production',
+                dir: './src/client',
+            });
+            await this.server.prepare();
+        } catch (error) {
+            this.logger.error(error);
+        }
     }
-  }
 
-  getNextServer(): NextServer {
-    return this.server;
-  }
+    getNextServer(): NextServer {
+        return this.server;
+    }
 }
