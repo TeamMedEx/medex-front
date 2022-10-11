@@ -30,8 +30,7 @@ const Login: NextPage = () => {
         if (!res.ok) {
             setDataLogin({ username: '', password: '' });
         } else {
-            // replace route to dashboard
-            // router.replace({ pathname: '/dashboard' });
+            router.push('/dashboard');
         }
     };
 

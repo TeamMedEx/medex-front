@@ -4,13 +4,16 @@
 
 /* base html tag */
 @layer base {
-  body {
-    @apply text-[#151515];
-  }
+    html {
+        font-family: poppins, system-ui, sans-serif;
+        }
+    body {
+        @apply text-[#151515];
+    }
 
-  header {
-    @apply fixed top-0 z-50 flex w-full items-center justify-between px-4 py-4 transition-all lg:px-10 lg:py-6;
-  }
+    header {
+        @apply fixed top-0 z-50 flex w-full items-center justify-between px-4 py-4 transition-all lg:px-10 lg:py-6;
+    }
 }
 
 @layer components {
@@ -25,4 +28,18 @@ html {
 
 .bg-green-teal {
   background-color: #079A92;
+}
+
+::-webkit-scrollbar {
+    width: 4px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: #d7d7d7;
+    border-radius: 100px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #888888;
+    border-radius: 100px;
 }

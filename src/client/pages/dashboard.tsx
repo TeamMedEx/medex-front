@@ -1,216 +1,135 @@
-import { FC } from 'react';
-import Head from 'next/head';
+import React, { FC, useEffect } from 'react';
 import type { GetServerSideProps } from 'next';
 import Footer from '../components/Footer';
 import { useRouter } from 'next/router';
-import { getSession, useSession } from 'next-auth/react';
-import * as jwt from 'jsonwebtoken';
+import { useSession } from 'next-auth/react';
+import { Button, Card, Hero } from 'react-daisyui';
+import heroBg from '../public/image/bg-hero.jpg';
+
+import SideNav from '../components/Sidenav';
+import HeaderPage from '../components/HeaderPage';
 
 type IDashboardProps = {
     is_logged_in: boolean;
 };
 
 const Dashboard: FC<IDashboardProps> = () => {
+    const { data: session } = useSession();
     const router = useRouter();
-    getSession().then((res) => console.log(res));
-    const sessionCheck = useSession();
-    console.log('ssessionCheck: ', sessionCheck);
+
+    useEffect(() => {
+        if (!session) router.push('/login');
+    }, []);
 
     return (
-        <div className="h-screen">
-            <Head>
-                <title>Medical Exam Platform</title>
-                <link rel="icon" href="/favicon.ico" />
-            </Head>
+        <div className="overflow-hidden">
+            <div className="max-w-8xl mx-auto px-4 sm:px-6 md:px-8">
+                <SideNav isLoggedIn={false} />
+                <div className="lg:pl-[20rem]">
+                    <div className="mx-auto max-w-3xl xl:ml-0 xl:max-w-5xl">
+                        <HeaderPage
+                            title={'Selamat Datang, Desmond!'}
+                            subTitle={'Saatnya lulus UKPMPPD bersama Med-Ex'}
+                        />
+                        <main
+                            id="content-wrapper"
+                            className="prose-slate dark:prose-dark prose relative z-20"
+                        >
+                            <Hero
+                                style={{
+                                    backgroundImage: `url(${heroBg.src})`,
+                                }}
+                                className="mt-5 mb-10 overflow-hidden rounded-sm"
+                            >
+                                <Hero.Overlay />
+                                <Hero.Content className="flex gap-10 py-10">
+                                    <div>
+                                        <img
+                                            src="/image/3d-exam-boy.png"
+                                            alt="3d-hero"
+                                            className="w-[250px]"
+                                        />
+                                    </div>
+                                    <div className="max-w-md text-white">
+                                        <h1 className="text-3xl font-bold">
+                                            Next UKMPPD Pada Tanggal 20 Desember
+                                            2022
+                                        </h1>
+                                        <p className="py-6">
+                                            Persiapkan dirimu dengan maksimal
+                                            untuk menghadapi ujian berikutnya,
+                                            yuk pelajari semua materinya di
+                                            platform Med-Ex!
+                                        </p>
 
-            <main className="h-full w-full">
-                <div className="flex w-full">
-                    <div className="w-3/12">
-                        <div className="mt-5 flex justify-center">
-                            <img
-                                src="/medex-logo-1.svg"
-                                width={150}
-                                height={100}
-                                className="cursor-pointer object-contain"
-                                onClick={() => router.push('/')}
-                            />
-                        </div>
-                        <div>
-                            <ul className="mt-10 ml-5">
-                                <li className="px-5 py-2 text-lg font-semibold">
-                                    BERANDA
-                                </li>
-                                <li className="px-5 py-2 text-lg font-semibold">
-                                    HISTORY
-                                </li>
-                                <li className="px-5 py-2 text-lg font-semibold">
-                                    TRANSAKSI
-                                </li>
-                                <li className="px-5 py-2 text-lg font-semibold">
-                                    PROFIL
-                                </li>
-                                <li className="px-5 py-2 text-lg font-semibold">
-                                    LOGOUT
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div className="w-9/12">
-                        <div className="flex h-16 items-center justify-end">
-                            <div className="flex">
-                                <div className="avatar">
-                                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-base-300">
-                                        <img
-                                            src="/medex-logo-1.svg"
-                                            className="cursor-pointer !object-contain"
-                                        />
+                                        <Button color="primary">
+                                            Get Started
+                                        </Button>
                                     </div>
+                                </Hero.Content>
+                            </Hero>
+                            <div className="grid grid-cols-3 gap-4">
+                                <div className="w-full rounded-md border-2 p-4 shadow-md">
+                                    <div>Complete Course</div>
+                                    <div className="text-2xl font-bold">28</div>
                                 </div>
-                                <div className="flex items-center justify-center px-2 font-semibold">
-                                    John Doe
+                                <div className="w-full rounded-md border-2 p-4 shadow-md">
+                                    <div>Complete Course</div>
+                                    <div className="text-2xl font-bold">28</div>
+                                </div>
+                                <div className="w-full rounded-md border-2 p-4 shadow-md">
+                                    <div>Complete Course</div>
+                                    <div className="text-2xl font-bold">28</div>
                                 </div>
                             </div>
-                        </div>
-                        <div className="bg-green-teal h-full w-full grid-cols-3 overflow-y-auto">
-                            <div className="grid grid-cols-3 gap-4 p-4">
-                                <div className="card-compact card image-full h-52 w-full bg-base-100 shadow-xl">
-                                    <figure>
-                                        <img
-                                            src="/image/bg-exam-medex.png"
-                                            alt="Shoes"
-                                        />
-                                    </figure>
-                                    <div className="card-body justify-between">
-                                        <h2 className="card-title">
-                                            Paket Tryout 11 Juli 2022
-                                        </h2>
-                                        <div className="flex">
-                                            <p>
-                                                Jumlah soal : 200 <br />
-                                                Durasi : 200 Menit <br />
-                                            </p>
-                                            <p>
-                                                Member : Gold <br />
-                                                Limit : 2
-                                            </p>
-                                        </div>
-                                        <div className="card-actions items-end justify-center">
-                                            <button
-                                                className="btn btn-primary"
-                                                onClick={() =>
-                                                    router.push('/tryout')
-                                                }
-                                            >
-                                                Mulai
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="card-compact card image-full h-52 w-full bg-base-100 shadow-xl">
-                                    <figure>
-                                        <img
-                                            src="/image/bg-exam-medex-1.jpg"
-                                            alt="Shoes"
-                                        />
-                                    </figure>
-                                    <div className="card-body justify-between">
-                                        <h2 className="card-title">
-                                            Paket Tryout 11 Juli 2022
-                                        </h2>
-                                        <div className="flex">
-                                            <p>
-                                                Jumlah soal : 200 <br />
-                                                Durasi : 200 Menit <br />
-                                            </p>
-                                            <p>
-                                                Member : Gold <br />
-                                                Limit : 2
-                                            </p>
-                                        </div>
-                                        <div className="card-actions items-end justify-center">
-                                            <button
-                                                className="btn btn-primary"
-                                                onClick={() =>
-                                                    router.push('/tryout')
-                                                }
-                                            >
-                                                Mulai
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="card-compact card image-full h-52 w-full bg-base-100 shadow-xl">
-                                    <figure>
-                                        <img
-                                            src="/image/bg-exam-medex-2.jpg"
-                                            alt="Shoes"
-                                        />
-                                    </figure>
-                                    <div className="card-body justify-between">
-                                        <h2 className="card-title">
-                                            Paket Tryout 11 Juli 2022
-                                        </h2>
-                                        <div className="flex">
-                                            <p>
-                                                Jumlah soal : 200 <br />
-                                                Durasi : 200 Menit <br />
-                                            </p>
-                                            <p>
-                                                Member : Gold <br />
-                                                Limit : 2
-                                            </p>
-                                        </div>
-                                        <div className="card-actions items-end justify-center">
-                                            <button
-                                                className="btn btn-primary"
-                                                onClick={() =>
-                                                    router.push('/tryout')
-                                                }
-                                            >
-                                                Mulai
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="card-compact card image-full h-52 w-full bg-base-100 shadow-xl">
-                                    <figure>
-                                        <img
-                                            src="/image/bg-exam-medex-3.jpg"
-                                            alt="Shoes"
-                                        />
-                                    </figure>
-                                    <div className="card-body justify-between">
-                                        <h2 className="card-title">
-                                            Paket Tryout 11 Juli 2022
-                                        </h2>
-                                        <div className="flex">
-                                            <p>
-                                                Jumlah soal : 200 <br />
-                                                Durasi : 200 Menit <br />
-                                            </p>
-                                            <p>
-                                                Member : Gold <br />
-                                                Limit : 2
-                                            </p>
-                                        </div>
-                                        <div className="card-actions items-end justify-center">
-                                            <button
-                                                className="btn btn-primary"
-                                                onClick={() =>
-                                                    router.push('/tryout')
-                                                }
-                                            >
-                                                Mulai
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div className="grid grid-cols-3 gap-4 pt-10">
+                                <Card
+                                    className="cursor-pointer"
+                                    onClick={() => router.push('/tryout-list')}
+                                >
+                                    <Card.Image
+                                        src="/image/bg-exam-medex-2.jpg"
+                                        alt="Shoes"
+                                    />
+                                    <Card.Body>
+                                        <Card.Title tag="h2">Tryout</Card.Title>
+                                        <p>
+                                            Daftar simulasi tryout UKMPPD,
+                                            latihan sebelum ujian resmi.
+                                        </p>
+                                    </Card.Body>
+                                </Card>
+                                <Card className="cursor-pointer">
+                                    <Card.Image
+                                        src="/image/bg-exam-medex-3.jpg"
+                                        alt="Shoes"
+                                    />
+                                    <Card.Body>
+                                        <Card.Title tag="h2">
+                                            Learning Class
+                                        </Card.Title>
+                                        <p>
+                                            Pelajari semua materi yang berkaitan
+                                            dengan UKMPPD di sini.
+                                        </p>
+                                    </Card.Body>
+                                </Card>
+                                <Card className="cursor-pointer">
+                                    <Card.Image
+                                        src="/image/bg-exam-medex-2.jpg"
+                                        alt="Shoes"
+                                    />
+                                    <Card.Body>
+                                        <Card.Title tag="h2">Exam</Card.Title>
+                                        <p>Daftar ujian UKMPPD.</p>
+                                    </Card.Body>
+                                </Card>
                             </div>
-                        </div>
+                        </main>
                         <Footer />
                     </div>
                 </div>
-            </main>
+            </div>
         </div>
     );
 };
