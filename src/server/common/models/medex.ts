@@ -1,6 +1,6 @@
 import { BaseResponse } from 'src/shared/base-response';
 
-export class MedexResponse {
+export class Medex {
   readonly baseResponse: BaseResponse;
   constructor() {
     this.baseResponse = {

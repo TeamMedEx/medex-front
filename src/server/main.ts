@@ -2,10 +2,12 @@ import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { ServerModule } from './server.module';
+import * as cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(ServerModule);
   const configService: ConfigService = app.get(ConfigService);
+  app.use(cookieParser());
   app.enableCors();
 
   // serving static files

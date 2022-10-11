@@ -1,46 +1,37 @@
-import axios from 'axios';
-import { ChangeEvent, FC, FormEvent, useState } from 'react';
-import type { GetServerSideProps } from 'next';
+import { ChangeEvent, FormEvent, useState } from 'react';
+import type { GetServerSideProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
+import { signIn } from 'next-auth/react';
 
 // shared module
-import { AuthRegisterDTO } from '../../shared/dtos';
-import { BaseResponse } from '../../shared/base-response';
+import { AuthLoginDTO } from '../../shared/dtos';
 
-type IRegisterProps = {
-    payload: any;
-};
-
-const Register: FC<IRegisterProps> = () => {
+const Login: NextPage = () => {
     const router = useRouter();
 
-    const [dataRegister, setDataRegister] = useState<AuthRegisterDTO>({
-        email: '',
+    const [dataLogin, setDataLogin] = useState<AuthLoginDTO>({
         username: '',
         password: '',
     });
 
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        setDataRegister({ ...dataRegister, [e.target.id]: e.target.value });
+        setDataLogin({ ...dataLogin, [e.target.id]: e.target.value });
     };
 
     const onSubmitHandler = async (e: FormEvent<HTMLInputElement>) => {
         e.preventDefault();
 
-        // send request to API
-        const { data } = await axios.post<BaseResponse>(
-            'api/auth/register',
-            dataRegister,
-        );
-
-        if (data.meta.status == 200) {
-            router.replace(
-                {
-                    pathname: '/login',
-                    query: { is_logged_in: true },
-                },
-                '/',
-            );
+        const res = await signIn('credentials', {
+            username: dataLogin.username,
+            password: dataLogin.password,
+            callbackUrl: `${window.location.origin}/login`,
+            redirect: false,
+        });
+        if (!res.ok) {
+            setDataLogin({ username: '', password: '' });
+        } else {
+            // replace route to dashboard
+            router.replace({ pathname: '/dashboard' });
         }
     };
 
@@ -60,16 +51,15 @@ const Register: FC<IRegisterProps> = () => {
                     <div className="mt-4" onSubmit={onSubmitHandler}>
                         <form className="mb-4 rounded bg-white px-8 pt-6 pb-8 shadow-md">
                             <div className="text-2xl font-semibold text-blue-900">
-                                Yuk, daftar sekarang buat dapetin diskon spesial
-                                di website Med-ex!
+                                Masuk untuk melanjutkan ke Med-ex!
                             </div>
                             <div className="mt-2 flex justify-center">
-                                Sudah punya akun?{' '}
+                                Belum punya akun?{' '}
                                 <div
                                     className="cursor-pointer pl-2 font-extrabold text-blue-900"
-                                    onClick={() => router.push('/login')}
+                                    onClick={() => router.push('/register')}
                                 >
-                                    Masuk
+                                    Daftar
                                 </div>
                             </div>
                             <div className="mt-8 mb-4">
@@ -84,23 +74,7 @@ const Register: FC<IRegisterProps> = () => {
                                     id="username"
                                     type="text"
                                     placeholder="Username"
-                                    value={dataRegister.username}
-                                    onChange={onChangeHandler}
-                                />
-                            </div>
-                            <div className="mb-4">
-                                <label
-                                    className="mb-2 block text-left text-sm font-bold text-gray-700"
-                                    htmlFor="email"
-                                >
-                                    Email
-                                </label>
-                                <input
-                                    className="focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
-                                    id="email"
-                                    type="text"
-                                    placeholder="Email"
-                                    value={dataRegister.email}
+                                    value={dataLogin.username}
                                     onChange={onChangeHandler}
                                 />
                             </div>
@@ -117,20 +91,26 @@ const Register: FC<IRegisterProps> = () => {
                                     id="password"
                                     type="password"
                                     placeholder="******************"
-                                    value={dataRegister.password}
+                                    value={dataLogin.password}
                                     onChange={onChangeHandler}
                                 />
                                 {/* <p className="text-red-500 text-xs italic">
                   Please choose a password.
                 </p> */}
                             </div>
-                            <div className="flex items-center justify-center">
+                            <div className="flex items-center justify-between">
                                 <button
-                                    className="focus:shadow-outline rounded bg-blue-500 py-2 px-10 font-bold text-white hover:bg-blue-700 focus:outline-none"
+                                    className="focus:shadow-outline rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700 focus:outline-none"
                                     type="submit"
                                 >
-                                    Daftar
+                                    Masuk
                                 </button>
+                                <a
+                                    className="inline-block align-baseline text-sm font-bold text-blue-500 hover:text-blue-800"
+                                    href="#"
+                                >
+                                    Forgot Password?
+                                </a>
                             </div>
                         </form>
                     </div>
@@ -140,8 +120,10 @@ const Register: FC<IRegisterProps> = () => {
     );
 };
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-    return { props: ctx.query };
+export const getServerSideProps: GetServerSideProps = async () => {
+    return {
+        props: {},
+    };
 };
 
-export default Register;
+export default Login;
