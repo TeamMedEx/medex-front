@@ -1,7 +1,6 @@
 import { HttpService, HttpModule as BaseHttpModule } from '@nestjs/axios';
 import { Logger, Module, OnModuleInit } from '@nestjs/common';
 
-HttpService;
 @Module({
   imports: [BaseHttpModule],
   exports: [BaseHttpModule],

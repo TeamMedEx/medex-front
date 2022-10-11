@@ -1,18 +1,25 @@
 import { FC, useEffect, useState } from 'react';
-import Head from 'next/head';
 import Footer from '../components/Footer';
 import { useRouter } from 'next/router';
 import { Countdown } from 'react-daisyui';
+import HeaderPage from '../components/HeaderPage';
+import { useSession } from 'next-auth/react';
 
 type ITryoutProps = {
     is_logged_in: boolean;
 };
 
 const Tryout: FC<ITryoutProps> = () => {
+    const { data: session } = useSession();
+    const router = useRouter();
+
     const [hoursTime, setHoursTime] = useState(0);
     const [minutesTime, setMinutesTime] = useState(0);
     const [secondsTime, setSecondsTime] = useState(0);
-    const router = useRouter();
+
+    useEffect(() => {
+        if (!session) router.push('/login');
+    }, []);
 
     useEffect(() => {
         countDownTimer();
@@ -33,8 +40,8 @@ const Tryout: FC<ITryoutProps> = () => {
             const minutes = secondsInMinutes % 60; // Minutes that cannot be written in hours
             const hours = (secondsInMinutes - minutes) / 60;
             // Now in hours, minutes and seconds, you have the time you need.
-            console.clear();
-            console.log(hours + ':' + minutes + ':' + seconds);
+            // console.clear();
+            // console.log(hours + ':' + minutes + ':' + seconds);
             setSecondsTime(seconds);
             if (seconds == 59) {
                 setMinutesTime(minutes);
@@ -82,11 +89,6 @@ const Tryout: FC<ITryoutProps> = () => {
 
     return (
         <div className="h-screen">
-            <Head>
-                <title>Medical Exam Platform</title>
-                <link rel="icon" href="/favicon.ico" />
-            </Head>
-
             <main className="h-full w-full">
                 <div className="flex w-full">
                     <div className="w-3/12">
@@ -111,7 +113,7 @@ const Tryout: FC<ITryoutProps> = () => {
                                                 viewBox="0 0 16 16"
                                             >
                                                 <path
-                                                    fill-rule="evenodd"
+                                                    fillRule="evenodd"
                                                     d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5z"
                                                 />
                                                 <path d="M1.713 11.865v-.474H2c.217 0 .363-.137.363-.317 0-.185-.158-.31-.361-.31-.223 0-.367.152-.373.31h-.59c.016-.467.373-.787.986-.787.588-.002.954.291.957.703a.595.595 0 0 1-.492.594v.033a.615.615 0 0 1 .569.631c.003.533-.502.8-1.051.8-.656 0-1-.37-1.008-.794h.582c.008.178.186.306.422.309.254 0 .424-.145.422-.35-.002-.195-.155-.348-.414-.348h-.3zm-.004-4.699h-.604v-.035c0-.408.295-.844.958-.844.583 0 .96.326.96.756 0 .389-.257.617-.476.848l-.537.572v.03h1.054V9H1.143v-.395l.957-.99c.138-.142.293-.304.293-.508 0-.18-.147-.32-.342-.32a.33.33 0 0 0-.342.338v.041zM2.564 5h-.635V2.924h-.031l-.598.42v-.567l.629-.443h.635V5z" />{' '}
@@ -188,26 +190,12 @@ const Tryout: FC<ITryoutProps> = () => {
                         </div>
                     </div>
                     <div className="w-9/12">
-                        <div className="flex h-16 items-center justify-end">
-                            <div className="flex">
-                                <div className="avatar">
-                                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-base-300">
-                                        <img
-                                            src="/medex-logo-1.svg"
-                                            className="cursor-pointer !object-contain"
-                                        />
-                                    </div>
-                                </div>
-                                <div className="flex items-center justify-center px-2 font-semibold">
-                                    John Doe
-                                </div>
-                            </div>
-                        </div>
+                        <HeaderPage title={'Tryout Paket 11 Juli 2022'} />
                         <div className="h-full w-full">
-                            <div className="flex grid grid-cols-3 items-center">
-                                <div className="text-2xl font-semibold">
+                            <div className="flex items-center justify-center">
+                                {/* <div className="text-2xl font-semibold">
                                     Tryout Paket 11 Juli 2022
-                                </div>
+                                </div> */}
                                 {/* <div className="text-2xl font-semibold">3:10:22</div> */}
                                 <div className="grid auto-cols-max grid-flow-col gap-5 text-center">
                                     <div className="rounded-box flex flex-col bg-rose-700 p-2 text-neutral-content">
