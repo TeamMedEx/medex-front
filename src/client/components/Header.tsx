@@ -31,14 +31,14 @@ function Header({ isLoggedIn }) {
             >
                 <ul className="hidden space-x-4 md:flex">
                     <li className="customClass" onClick={() => signIn()}>
-                        Login with nextauth
+                        Login
                     </li>
-                    <li
+                    {/* <li
                         className="customClass"
                         onClick={() => router.push('/login')}
                     >
                         Login
-                    </li>
+                    </li> */}
                     <li
                         className="customClass"
                         onClick={() => router.push('/register')}
