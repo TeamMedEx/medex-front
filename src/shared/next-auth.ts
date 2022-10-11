@@ -29,8 +29,8 @@ export default function (req: any, res: any) {
                         const { data } = await axios.post(
                             loginUrl,
                             {
-                                username: credentials.username,
-                                password: credentials.password,
+                                username: credentials?.username,
+                                password: credentials?.password,
                             },
                             {
                                 headers: {
@@ -64,21 +64,21 @@ export default function (req: any, res: any) {
             jwt: async ({ token, user, account }) => {
                 if (account?.provider == 'credentials') {
                     token = {
-                        user: user.user,
-                        accessToken: user.token,
+                        user: user?.user,
+                        accessToken: user?.token,
                     };
                 } else if (account?.provider == 'google') {
                     token = {
                         user: user,
-                        accessToken: account.access_token,
+                        accessToken: account?.access_token,
                     };
                 }
                 return token;
             },
             session: async ({ session, token }) => {
                 console.log(token);
-                session.accessToken = token.accessToken;
-                session.user = token.user ? token.user : session.user;
+                session.accessToken = token?.accessToken;
+                session.user = token.user ? token?.user : session?.user;
                 return session;
             },
         },

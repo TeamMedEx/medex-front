@@ -30,7 +30,7 @@ const TryoutList: FC = () => {
                             className="prose-slate dark:prose-dark prose relative z-20"
                         >
                             <div className="h-full w-full grid-cols-3 overflow-y-auto">
-                                <div className="grid grid-cols-3 gap-4 p-4">
+                                <div className="grid grid-cols-3 gap-4">
                                     <div className="card-compact card image-full h-52 w-full bg-base-100 shadow-xl">
                                         <figure>
                                             <img
