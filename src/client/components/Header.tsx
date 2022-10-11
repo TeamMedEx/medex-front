@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router';
+import { signIn } from 'next-auth/react';
 
 function Header({ isLoggedIn }) {
     const router = useRouter();
@@ -29,6 +30,9 @@ function Header({ isLoggedIn }) {
                 }`}
             >
                 <ul className="hidden space-x-4 md:flex">
+                    <li className="customClass" onClick={() => signIn()}>
+                        Login with nextauth
+                    </li>
                     <li
                         className="customClass"
                         onClick={() => router.push('/login')}

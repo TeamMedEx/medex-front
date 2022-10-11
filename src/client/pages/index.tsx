@@ -12,7 +12,6 @@ const Home: NextPage<IHomeProps> = ({ is_logged_in }) => {
     return (
         <div className="flex min-h-screen flex-col items-center justify-center py-2">
             <Header isLoggedIn={is_logged_in} />
-
             <main className="flex w-full flex-1 flex-col items-center justify-center text-center">
                 <div id="home">
                     <img
@@ -72,8 +71,9 @@ const Home: NextPage<IHomeProps> = ({ is_logged_in }) => {
     );
 };
 
-export const getServerSideProps: GetServerSideProps = async () => {
-    return { props: {} };
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+    console.log(ctx.query);
+    return { props: ctx.query };
 };
 
 export default Home;
