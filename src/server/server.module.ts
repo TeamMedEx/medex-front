@@ -6,6 +6,6 @@ import { ViewModule } from 'src/server/view/view.module';
 import { routes } from './app/routes';
 
 @Module({
-  imports: [RouterModule.register(routes), AppModule, ViewModule],
+   imports: [RouterModule.register(routes), AppModule, ViewModule],
 })
 export class ServerModule {}
