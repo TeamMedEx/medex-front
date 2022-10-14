@@ -31,7 +31,7 @@ const TryoutList: FC = () => {
                   >
                      <div className="h-full w-full grid-cols-3 overflow-y-auto">
                         <div className="grid grid-cols-3 gap-4">
-                           <div className="card image-full card-compact h-52 w-full bg-base-100 shadow-xl">
+                           <div className="card-compact card image-full h-52 w-full bg-base-100 shadow-xl">
                               <figure>
                                  <img
                                     src="/image/bg-exam-medex.png"

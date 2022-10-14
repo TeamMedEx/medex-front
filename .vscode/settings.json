@@ -1,5 +1,6 @@
 {
   "editor.formatOnSave": false,
+  "prettier.tabWidth": 3,
   "editor.tabSize": 3,
   "editor.codeActionsOnSave": {
       "source.fixAll.eslint": true

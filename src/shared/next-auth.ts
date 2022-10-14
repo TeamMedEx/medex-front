@@ -1,89 +1,110 @@
-import NextAuth from 'next-auth';
+import axios from 'axios';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
-import axios from 'axios';
 import * as jwt from 'jsonwebtoken';
 
-/**
- * NextAuth Setup
- */
-export default function (req: any, res: any) {
-   return NextAuth(req, res, {
-      providers: [
-         GoogleProvider({
-            clientId: process.env.GOOGLE_CLIENT_ID,
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-         }),
-         CredentialsProvider({
-            credentials: {
-               username: {
-                  type: 'text',
-               },
-               password: {
-                  type: 'password',
-               },
-            },
-            authorize: async (credentials) => {
-               try {
-                  const loginUrl = `${process.env.MEDEX_BASEAPI_URI}${process.env.MEDEX_LOGIN_URI}`;
-                  const { data } = await axios.post(
-                     loginUrl,
-                     {
-                        username: credentials?.username,
-                        password: credentials?.password,
-                     },
-                     {
-                        headers: {
-                           accept: '*/*',
-                           'Content-Type': 'application/json',
-                        },
-                     },
-                  );
-                  if (data.meta.status !== 200) return null;
-                  const decoded = jwt.decode(data.data.token);
-                  const user = {
-                     sub: decoded['_id'],
-                     username: decoded['username'],
-                     email: decoded['email'],
-                  };
-                  return { user, ...data.data };
-               } catch (error) {
-                  console.log(error);
-               }
-            },
-         }),
-      ],
-      callbacks: {
-         signIn: async ({ account, profile }) => {
-            if (account.provider == 'google') {
-               console.log(profile, 'callbacks signIn');
-               return true;
-            }
+const providers = [
+   GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      authorization: {
+         params: {
+            prompt: 'consent',
+            access_type: 'offline',
+            response_type: 'code',
+         },
+      },
+   }),
+   CredentialsProvider({
+      credentials: {
+         username: {
+            type: 'text',
+         },
+         email: {
+            type: 'email',
+         },
+         password: {
+            type: 'password',
+         },
+      },
+      authorize: async (credentials) => {
+         try {
+            const loginUrl = `${process.env.MEDEX_BASEAPI_URI}${process.env.MEDEX_LOGIN_URI}`;
+            const { data } = await axios.post(loginUrl, credentials);
+            if (data.meta.status !== 200) return null;
+            const decoded = jwt.decode(data.data.token);
+            const user = {
+               sub: decoded['_id'],
+               email: decoded['email'],
+            };
+            return { user, ...data.data };
+         } catch (error) {
+            console.log(error);
+         }
+      },
+   }),
+];
+
+const callbacks = {
+   signIn: async ({ account, profile }) => {
+      if (account.provider == 'google') {
+         /**
+          * @TODO : persist data user to database
+          * if success replace token and refresh_token from google
+          */
+         if (!profile.email_verified) return false;
+         const data = {
+            email: profile.email,
+            name: profile.name,
+            refreshToken: account.refresh_token,
+            expiresAt: account.expires_at,
+            source: 'google',
+         };
+         // const registerUrl = `${process.env.MEDEX_BASEAPI_URI}${process.env.MEDEX_REGISTER_URI}`;
+         try {
+            // await axios.post(registerUrl, data);
             return true;
-         },
-         jwt: async ({ token, user, account }) => {
-            if (account?.provider == 'credentials') {
-               token = {
-                  user: user?.user,
-                  accessToken: user?.token,
-               };
-            } else if (account?.provider == 'google') {
-               token = {
-                  user: user,
-                  accessToken: account?.access_token,
-               };
-            }
-            return token;
-         },
-         session: async ({ session, token }) => {
-            console.log(token);
-            session.accessToken = token?.accessToken;
-            session.user = token.user ? token?.user : session?.user;
-            return session;
-         },
-      },
-      pages: {
-         signIn: '/login',
-      },
-   });
-}
+         } catch (_) {
+            return false;
+         }
+      } else {
+         return true;
+      }
+   },
+   jwt: async ({ token, user, account }) => {
+      if (user && account?.provider == 'credentials') {
+         const localdate = new Date(user.expiresAt).toLocaleString();
+         const timestamp = Number(Date.parse(localdate)) / 1000;
+         token = {
+            user: user.user,
+            accessToken: user.token,
+            refreshToken: user.refreshToken,
+            tokenExpires: timestamp,
+         };
+      } else if (user && account?.provider == 'google') {
+         token = {
+            user: user,
+            accessToken: account.access_token,
+            refreshToken: account.refresh_token,
+            tokenExpires: account.expires_at,
+         };
+      }
+      return token;
+   },
+   session: async ({ session, token }) => {
+      session.user = token.user ? token.user : session.user;
+      session.accessToken = token.accessToken;
+      session.expires = token.tokenExpires;
+      return session;
+   },
+};
+
+const pages = {
+   signIn: '/login',
+};
+
+export const nextauthOpts = {
+   providers: providers,
+   callbacks: callbacks,
+   pages: pages,
+};

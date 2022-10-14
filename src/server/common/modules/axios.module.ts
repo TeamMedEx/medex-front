@@ -16,19 +16,13 @@ export class AxiosModule extends BaseHttpModule implements OnModuleInit {
       // Add request interceptor and response interceptor to log request infos
       const axios = this.httpService.axiosRef;
       axios.interceptors.request.use(function (config) {
-         config['metadata'] = {
-            ...config['metadata'],
-            startDate: new Date(),
-         };
+         config['metadata'] = { ...config['metadata'], startDate: new Date() };
          return config;
       });
       axios.interceptors.response.use(
          (response) => {
             const { config } = response;
-            config['metadata'] = {
-               ...config['metadata'],
-               endDate: new Date(),
-            };
+            config['metadata'] = { ...config['metadata'], endDate: new Date() };
             const duration =
                config['metadata'].endDate.getTime() -
                config['metadata'].startDate.getTime();
