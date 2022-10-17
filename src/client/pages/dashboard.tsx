@@ -11,7 +11,6 @@ import HeaderPage from '../components/HeaderPage';
 import { unstable_getServerSession } from 'next-auth';
 import { nextauthOpts } from '../../shared/next-auth';
 
-
 const Dashboard: NextPage = () => {
    const { data: session, status } = useSession();
    const router = useRouter();
