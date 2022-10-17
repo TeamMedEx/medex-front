@@ -1,5 +1,5 @@
 import { Injectable, Logger, NestMiddleware } from '@nestjs/common';
-import NextAuth from '../../../shared/next-auth';
+import NextAuth from '../../../shared';
 
 @Injectable()
 export class NextAuthMiddleware implements NestMiddleware {
