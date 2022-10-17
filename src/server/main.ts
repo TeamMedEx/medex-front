@@ -5,17 +5,17 @@ import { ServerModule } from './server.module';
 import * as cookieParser from 'cookie-parser';
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(ServerModule);
-  const configService: ConfigService = app.get(ConfigService);
-  app.use(cookieParser());
-  app.enableCors();
+   const app = await NestFactory.create<NestExpressApplication>(ServerModule);
+   const configService: ConfigService = app.get(ConfigService);
+   app.use(cookieParser());
+   app.enableCors();
 
-  // serving static files
-  app.useStaticAssets('src/client/public', {
-    prefix: '/',
-    index: false,
-  });
+   // serving static files
+   app.useStaticAssets('src/client/public', {
+      prefix: '/',
+      index: false,
+   });
 
-  await app.listen(configService.get('PORT') || 3000);
+   await app.listen(configService.get('PORT') || 3000);
 }
 bootstrap();
