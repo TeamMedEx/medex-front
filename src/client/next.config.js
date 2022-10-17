@@ -1,6 +1,6 @@
 module.exports = {
-  distDir: '../../.next',
-  eslint: {
-    dirs: ['src/client'],
-  },
+   distDir: '../../.next',
+   eslint: {
+      dirs: ['src/client'],
+   },
 };
