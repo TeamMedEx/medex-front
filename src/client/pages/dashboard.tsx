@@ -10,16 +10,18 @@ import SideNav from '../components/Sidenav';
 import HeaderPage from '../components/HeaderPage';
 import { unstable_getServerSession } from 'next-auth';
 import { nextauthOpts } from '../../shared/next-auth';
+import { useSelector, useDispatch } from 'react-redux';
+import type { RootState } from '../redux/configureStore';
+import { decrement, increment, incrementByAmount } from '../redux/counter';
 
 const Dashboard: NextPage = () => {
    const { data: session, status } = useSession();
    const router = useRouter();
+   const count = useSelector((state: RootState) => state.counter.count);
+   const dispatch = useDispatch();
 
-   // if (typeof window === 'undefined') return <></>;
-   // router.push('/login');
    return (
       <>
-         {/* {!session && router.push('/login')} */}
          <div className="overflow-hidden">
             <div className="max-w-8xl mx-auto px-4 sm:px-6 md:px-8">
                <SideNav isLoggedIn={false} />
@@ -114,7 +116,7 @@ const Dashboard: NextPage = () => {
                                  alt="Shoes"
                               />
                               <Card.Body>
-                                 <Card.Title tag="h2">Exam</Card.Title>
+                                 <Card.Title tag="h2">UKMPPD</Card.Title>
                                  <p>Daftar ujian UKMPPD.</p>
                               </Card.Body>
                            </Card>
@@ -149,7 +151,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
    return {
       props: { session },
    };
-   // return { props: ctx.query };
 };
 
 export default Dashboard;
