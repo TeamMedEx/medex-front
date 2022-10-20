@@ -3,17 +3,26 @@ import type { GetServerSideProps } from 'next';
 import Footer from '../components/Footer';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
+import { nextauthOpts } from '../../shared/next-auth';
+import { unstable_getServerSession } from 'next-auth';
 
 import SideNav from '../components/Sidenav';
 import HeaderPage from '../components/HeaderPage';
+import { getExamList } from '../helper/Api/General';
 
 const TryoutList: FC = () => {
-   const { data: session } = useSession();
    const router = useRouter();
 
    useEffect(() => {
-      if (!session) router.push('/login');
+      getData();
    }, []);
+
+   const getData = async () => {
+      const result = await getExamList({});
+      console.log('result : ', result);
+
+      return result;
+   };
 
    return (
       <div className="overflow-hidden">
@@ -167,7 +176,26 @@ const TryoutList: FC = () => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-   return { props: ctx.query };
+   const session = await unstable_getServerSession(
+      ctx.req,
+      ctx.res,
+      nextauthOpts,
+   );
+
+   if (!session) {
+      return {
+         redirect: {
+            destination: '/login',
+            permanent: false,
+         },
+      };
+   }
+
+   return {
+      props: { session },
+   };
+
+   // return { props: ctx.query };
 };
 
 export default TryoutList;

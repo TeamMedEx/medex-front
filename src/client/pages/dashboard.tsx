@@ -137,7 +137,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       ctx.res,
       nextauthOpts,
    );
-   console.log('session dashboard: ', session);
 
    if (!session) {
       return {
