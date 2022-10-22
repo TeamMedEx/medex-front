@@ -1,7 +1,6 @@
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { MESSAGE_CONST } from '../const';
-import { getLocalStorage, LOCALSTORAGE } from '../LocalStorage';
 import { getSession } from 'next-auth/react';
 
 export const API_CALL = async (

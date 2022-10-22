@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react';
+import { FC, useEffect, useState } from 'react';
 import type { GetServerSideProps } from 'next';
 import Footer from '../components/Footer';
 import { useRouter } from 'next/router';
@@ -12,15 +12,17 @@ import { getExamList } from '../helper/Api/General';
 
 const TryoutList: FC = () => {
    const router = useRouter();
+   const [dataList, setDataList] = useState([]);
 
    useEffect(() => {
       getData();
    }, []);
 
    const getData = async () => {
-      const result = await getExamList({});
-      console.log('result : ', result);
-
+      const body = { page: '1', limit: '10', search: '' };
+      const result = await getExamList(body);
+      console.log('isi list result : ', result);
+      setDataList(result.data);
       return result;
    };
 
@@ -40,130 +42,49 @@ const TryoutList: FC = () => {
                   >
                      <div className="h-full w-full grid-cols-3 overflow-y-auto">
                         <div className="grid grid-cols-3 gap-4">
-                           <div className="card-compact card image-full h-52 w-full bg-base-100 shadow-xl">
-                              <figure>
-                                 <img
-                                    src="/image/bg-exam-medex.png"
-                                    alt="Shoes"
-                                 />
-                              </figure>
-                              <div className="card-body justify-between">
-                                 <h2 className="card-title">
-                                    Paket Tryout 11 Juli 2022
-                                 </h2>
-                                 <div className="flex">
-                                    <p>
-                                       Jumlah soal : 200 <br />
-                                       Durasi : 200 Menit <br />
-                                    </p>
-                                    <p>
-                                       Member : Gold <br />
-                                       Limit : 2
-                                    </p>
-                                 </div>
-                                 <div className="card-actions items-end justify-center">
-                                    <button
-                                       className="btn btn-primary"
-                                       onClick={() => router.push('/tryout')}
+                           {dataList.length > 0 &&
+                              dataList.map((val, i): any => {
+                                 return (
+                                    <div
+                                       key={val._id}
+                                       className="card-compact card image-full h-52 w-full bg-base-100 shadow-xl"
                                     >
-                                       Mulai
-                                    </button>
-                                 </div>
-                              </div>
-                           </div>
-                           <div className="card-compact card image-full h-52 w-full bg-base-100 shadow-xl">
-                              <figure>
-                                 <img
-                                    src="/image/bg-exam-medex-1.jpg"
-                                    alt="Shoes"
-                                 />
-                              </figure>
-                              <div className="card-body justify-between">
-                                 <h2 className="card-title">
-                                    Paket Tryout 11 Juli 2022
-                                 </h2>
-                                 <div className="flex">
-                                    <p>
-                                       Jumlah soal : 200 <br />
-                                       Durasi : 200 Menit <br />
-                                    </p>
-                                    <p>
-                                       Member : Gold <br />
-                                       Limit : 2
-                                    </p>
-                                 </div>
-                                 <div className="card-actions items-end justify-center">
-                                    <button
-                                       className="btn btn-primary"
-                                       onClick={() => router.push('/tryout')}
-                                    >
-                                       Mulai
-                                    </button>
-                                 </div>
-                              </div>
-                           </div>
-                           <div className="card-compact card image-full h-52 w-full bg-base-100 shadow-xl">
-                              <figure>
-                                 <img
-                                    src="/image/bg-exam-medex-2.jpg"
-                                    alt="Shoes"
-                                 />
-                              </figure>
-                              <div className="card-body justify-between">
-                                 <h2 className="card-title">
-                                    Paket Tryout 11 Juli 2022
-                                 </h2>
-                                 <div className="flex">
-                                    <p>
-                                       Jumlah soal : 200 <br />
-                                       Durasi : 200 Menit <br />
-                                    </p>
-                                    <p>
-                                       Member : Gold <br />
-                                       Limit : 2
-                                    </p>
-                                 </div>
-                                 <div className="card-actions items-end justify-center">
-                                    <button
-                                       className="btn btn-primary"
-                                       onClick={() => router.push('/tryout')}
-                                    >
-                                       Mulai
-                                    </button>
-                                 </div>
-                              </div>
-                           </div>
-                           <div className="card-compact card image-full h-52 w-full bg-base-100 shadow-xl">
-                              <figure>
-                                 <img
-                                    src="/image/bg-exam-medex-3.jpg"
-                                    alt="Shoes"
-                                 />
-                              </figure>
-                              <div className="card-body justify-between">
-                                 <h2 className="card-title">
-                                    Paket Tryout 11 Juli 2022
-                                 </h2>
-                                 <div className="flex">
-                                    <p>
-                                       Jumlah soal : 200 <br />
-                                       Durasi : 200 Menit <br />
-                                    </p>
-                                    <p>
-                                       Member : Gold <br />
-                                       Limit : 2
-                                    </p>
-                                 </div>
-                                 <div className="card-actions items-end justify-center">
-                                    <button
-                                       className="btn btn-primary"
-                                       onClick={() => router.push('/tryout')}
-                                    >
-                                       Mulai
-                                    </button>
-                                 </div>
-                              </div>
-                           </div>
+                                       <figure>
+                                          <img
+                                             src="/image/bg-exam-medex-2.jpg"
+                                             alt="Shoes"
+                                          />
+                                       </figure>
+                                       <div className="card-body justify-between">
+                                          <h2 className="card-title">
+                                             {val.title}
+                                          </h2>
+                                          <div className="flex">
+                                             <p>
+                                                Jumlah soal : {} <br />
+                                                Durasi : {
+                                                   val.duration
+                                                } Menit <br />
+                                             </p>
+                                             <p>
+                                                Member : {val.type} <br />
+                                                Limit : 2
+                                             </p>
+                                          </div>
+                                          <div className="card-actions items-end justify-center">
+                                             <button
+                                                className="btn btn-primary"
+                                                onClick={() =>
+                                                   router.push('/tryout')
+                                                }
+                                             >
+                                                Mulai
+                                             </button>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 );
+                              })}
                         </div>
                      </div>
                   </main>
@@ -194,8 +115,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
    return {
       props: { session },
    };
-
-   // return { props: ctx.query };
 };
 
 export default TryoutList;

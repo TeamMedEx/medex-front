@@ -42,7 +42,7 @@ export const getExamList = async ({
 }: IGetExam) => {
    try {
       const options = {
-         url: `/exam/all?page=${page}&limit=${limit}&search=${search}`,
+         url: `/api/v1/exam/all?page=${page}&limit=${limit}&search=${search}`,
       };
       const response = await API_CALL(options);
       return response;
