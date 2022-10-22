@@ -4,7 +4,7 @@ import { signOut } from 'next-auth/react';
 
 type IHeaderPage = {
    title: string;
-   subTitle: string;
+   subTitle?: string;
    profile?: any;
 };
 

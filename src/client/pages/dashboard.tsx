@@ -81,7 +81,7 @@ const Dashboard: NextPage = () => {
                         <div className="grid grid-cols-3 gap-4 pt-10">
                            <Card
                               className="cursor-pointer"
-                              onClick={() => router.push('/tryout-list')}
+                              onClick={() => router.push('/tryout')}
                            >
                               <Card.Image
                                  src="/image/bg-exam-medex-2.jpg"

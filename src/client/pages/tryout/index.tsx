@@ -1,16 +1,16 @@
 import { FC, useEffect, useState } from 'react';
 import type { GetServerSideProps } from 'next';
-import Footer from '../components/Footer';
+import Footer from '../../components/Footer';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
-import { nextauthOpts } from '../../shared/next-auth';
+import { nextauthOpts } from '../../../shared/next-auth';
 import { unstable_getServerSession } from 'next-auth';
 
-import SideNav from '../components/Sidenav';
-import HeaderPage from '../components/HeaderPage';
-import { getExamList } from '../helper/Api/General';
+import SideNav from '../../components/Sidenav';
+import HeaderPage from '../../components/HeaderPage';
+import { getExamList } from '../../helper/Api/General';
 
-const TryoutList: FC = () => {
+const Tryout: FC = () => {
    const router = useRouter();
    const [dataList, setDataList] = useState([]);
 
@@ -21,7 +21,6 @@ const TryoutList: FC = () => {
    const getData = async () => {
       const body = { page: '1', limit: '10', search: '' };
       const result = await getExamList(body);
-      console.log('isi list result : ', result);
       setDataList(result.data);
       return result;
    };
@@ -42,7 +41,7 @@ const TryoutList: FC = () => {
                   >
                      <div className="h-full w-full grid-cols-3 overflow-y-auto">
                         <div className="grid grid-cols-3 gap-4">
-                           {dataList.length > 0 &&
+                           {dataList?.length > 0 &&
                               dataList.map((val, i): any => {
                                  return (
                                     <div
@@ -75,7 +74,9 @@ const TryoutList: FC = () => {
                                              <button
                                                 className="btn btn-primary"
                                                 onClick={() =>
-                                                   router.push('/tryout')
+                                                   router.push(
+                                                      `/tryout/${val._id}`,
+                                                   )
                                                 }
                                              >
                                                 Mulai
@@ -117,4 +118,4 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
    };
 };
 
-export default TryoutList;
+export default Tryout;
