@@ -31,25 +31,20 @@ export class TryoutService extends Medex {
          return error.response?.data ? error.response.data : this.baseResponse;
       }
    }
+
+   async detailTryout(param, req, header): Promise<BaseResponse> {
+      try {
+         const { data } = await this.httpService.axiosRef({
+            method: 'GET',
+            url: `${this.configService.get<string>(
+               'MEDEX_BASEAPI_URI',
+            )}/exam/${param.oid}/detail`,
+            headers: { 'x-access-token': header.authorization },
+         });
+         return data;
+      } catch (error) {
+         return error.response?.data ? error.response.data : this.baseResponse;
+      }
+   }
 }
 
-// 	async endConsultation(param, req: any, header: any): Promise<any> {
-// 		let options = {
-// 			baseURL: process.env.NEXT_PUBLIC_CONSUL_API_BASE_URL + 'v1/',
-// 			method: 'post',
-// 			url: `teleconsultation/${param.orderNumber}/close`,
-// 			timeout: parseInt(process.env.TIMEOUT, 60000),
-// 			data: req.body,
-// 			headers: {
-// 				authorization: header.auth,
-// 			},
-// 		};
-// 		let res = await lastValueFrom(
-// 			this.httpService.request(options).pipe(
-// 				map((res) => {
-// 					return res.data;
-// 				}),
-// 			),
-// 		);
-// 		return res;
-// 	}

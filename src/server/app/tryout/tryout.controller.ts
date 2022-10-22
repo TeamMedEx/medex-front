@@ -30,4 +30,22 @@ export class TryoutController {
    ): Promise<any> {
       return await this.tryoutService.listTryout(param, req, header);
    }
+
+   @HttpCode(200)
+   @Get('/api/v1/exam/:oid/detail')
+   @Header('Content-type', 'application/json')
+   async detailTryout(
+      @Param() param: any,
+      @Request() req: any,
+      @Headers() header: any,
+   ): Promise<any> {
+      return await this.tryoutService.detailTryout(param, req, header);
+   }
+
+   // @HttpCode(200)
+   // @Get('/api/v1/consul/user/:orderNumber/:type')
+   // @Header('Content-type', 'application/json')
+   // async getConsulUser(@Param() param: any, @Request() req: any, @Headers() header: any): Promise<any> {
+   // 	return this.chatService.getConsulUser(param, req, header);
+   // }
 }

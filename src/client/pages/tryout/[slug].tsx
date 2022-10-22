@@ -9,6 +9,11 @@ import { unstable_getServerSession } from 'next-auth';
 import type { GetServerSideProps } from 'next';
 
 import examBg from '../../public/image/exam-vector.webp';
+import { getDetailExam } from '../../helper/Api/General';
+import { encryptData } from '../../helper/Common';
+import { setLocalStorage } from '../../helper/LocalStorage';
+import dayjs from 'dayjs';
+import CountDownExam from '../../components/Countdown';
 
 type ITryoutProps = {
    is_logged_in: boolean;
@@ -17,51 +22,41 @@ type ITryoutProps = {
 const TryoutDetail: FC<ITryoutProps> = () => {
    const { data: session } = useSession();
    const router = useRouter();
-
-   const [hoursTime, setHoursTime] = useState(0);
-   const [minutesTime, setMinutesTime] = useState(0);
-   const [secondsTime, setSecondsTime] = useState(0);
-
    const [startTryout, setStartTryout] = useState(false);
+   const [examData, setExamData] = useState<{ [key: string]: any }>({});
+   const [examActivity, setExamActivity] = useState<{ [key: string]: any }>({
+      examId: '',
+      totalQuestion: 0,
+      totalAnswered: 0,
+      indecisive: 0,
+      notAnswered: 0,
+      startedAt: '',
+      answer: [{}],
+   });
 
    useEffect(() => {
-      if (!session) router.push('/login');
-   }, []);
-
-   useEffect(() => {
+      getExamData();
       if (startTryout) {
-         countDownTimer();
+         // countDownTimer();
       }
    }, [startTryout]);
 
-   let myTimer;
-   const countDownTimer = () => {
-      myTimer = setInterval(myClock, 1000);
-      let c = 3610; //Initially set to 1 hour
-      const initMinute = ((c - (c % 60)) / 60) % 60;
-      setMinutesTime(initMinute);
-      setHoursTime(((c - (c % 60)) / 60 - initMinute) / 60);
-
-      function myClock() {
-         --c;
-         const seconds = c % 60; // Seconds that cannot be written in minutes
-         const secondsInMinutes = (c - seconds) / 60; // Gives the seconds that COULD be given in minutes
-         const minutes = secondsInMinutes % 60; // Minutes that cannot be written in hours
-         const hours = (secondsInMinutes - minutes) / 60;
-         // Now in hours, minutes and seconds, you have the time you need.
-         // console.clear();
-         // console.log(hours + ':' + minutes + ':' + seconds);
-         setSecondsTime(seconds);
-         if (seconds == 59) {
-            setMinutesTime(minutes);
-         }
-         if (minutes == 59) {
-            setHoursTime(hours);
-         }
-         if (c == 0) {
-            clearInterval(myTimer);
-         }
-      }
+   const getExamData = async () => {
+      const { data } = await getDetailExam(router.query.slug);
+      console.log('result : ', data);
+      const body = {
+         examId: data._id,
+         totalQuestion: data.questions.length,
+         totalAnswered: 0,
+         indecisive: 0,
+         notAnswered: 0,
+         startedAt: '',
+         answer: [{}],
+      };
+      setLocalStorage('examActivity', encryptData(body));
+      setExamActivity(body);
+      setExamData(data);
+      return data;
    };
 
    const paginationBottom = () => {
@@ -96,6 +91,18 @@ const TryoutDetail: FC<ITryoutProps> = () => {
       return totalPage;
    };
 
+   const startExam = () => {
+      setStartTryout(true);
+      console.log('dayjs() : ', dayjs().format());
+      const body = {
+         ...examActivity,
+         startedAt: dayjs().format(),
+      };
+      setExamActivity(body);
+   };
+
+   console.log('isi examActivity : ', examActivity);
+
    return (
       <div className="h-screen">
          <main className="h-full w-full">
@@ -129,7 +136,9 @@ const TryoutDetail: FC<ITryoutProps> = () => {
                                  </svg>
                               </div>
                               <div className="">Jumlah Soal</div>
-                              <div className="stat-value">100</div>
+                              <div className="stat-value">
+                                 {examActivity.totalQuestion}
+                              </div>
                            </div>
 
                            <div className="stat">
@@ -146,7 +155,9 @@ const TryoutDetail: FC<ITryoutProps> = () => {
                                  </svg>
                               </div>
                               <div className="">Sudah Dijawab</div>
-                              <div className="stat-value">7</div>
+                              <div className="stat-value">
+                                 {examActivity.totalAnswered}
+                              </div>
                            </div>
 
                            <div className="stat">
@@ -169,7 +180,9 @@ const TryoutDetail: FC<ITryoutProps> = () => {
                               </div>
 
                               <div className="">Ragu-ragu</div>
-                              <div className="stat-value">1</div>
+                              <div className="stat-value">
+                                 {examActivity.indecisive}
+                              </div>
                            </div>
                            <div className="stat">
                               <div className="stat-figure">
@@ -184,7 +197,9 @@ const TryoutDetail: FC<ITryoutProps> = () => {
                               </div>
 
                               <div className="">Belum Dijawab</div>
-                              <div className="stat-value">93</div>
+                              <div className="stat-value">
+                                 {examActivity.notAnswered}
+                              </div>
                            </div>
                         </div>
                      </div>
@@ -199,7 +214,7 @@ const TryoutDetail: FC<ITryoutProps> = () => {
                   </div>
                </div>
                <div className="w-9/12">
-                  <HeaderPage title={'Tryout Paket 11 Juli 2022'} />
+                  <HeaderPage title={examData?.title} />
                   {!startTryout && (
                      <div>
                         <div className="hero rounded-lg bg-base-200">
@@ -220,9 +235,7 @@ const TryoutDetail: FC<ITryoutProps> = () => {
                                  <div className="flex justify-center">
                                     <button
                                        className="btn btn-primary"
-                                       onClick={() => {
-                                          setStartTryout(true);
-                                       }}
+                                       onClick={() => startExam()}
                                     >
                                        Mulai ujian
                                     </button>
@@ -235,29 +248,7 @@ const TryoutDetail: FC<ITryoutProps> = () => {
                   {startTryout && (
                      <div className="h-full w-full">
                         <div className="flex items-center justify-center">
-                           <div className="grid auto-cols-max grid-flow-col gap-5 text-center">
-                              <div className="rounded-box flex flex-col bg-rose-700 p-2 text-neutral-content">
-                                 <Countdown
-                                    className="font-mono text-5xl"
-                                    value={hoursTime}
-                                 />
-                                 hours
-                              </div>
-                              <div className="rounded-box flex flex-col bg-rose-700 p-2 text-neutral-content">
-                                 <Countdown
-                                    className="font-mono text-5xl"
-                                    value={minutesTime}
-                                 />
-                                 min
-                              </div>
-                              <div className="rounded-box flex flex-col bg-rose-700 p-2 text-neutral-content">
-                                 <Countdown
-                                    className="font-mono text-5xl"
-                                    value={secondsTime}
-                                 />
-                                 sec
-                              </div>
-                           </div>
+                           <CountDownExam start={startTryout} />
                         </div>
                         <div className="mt-8 grid grid-cols-12 pr-20">
                            <div className="text-xl font-bold">8.</div>
