@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState, Fragment } from 'react';
 import Footer from '../../components/Footer';
 import { useRouter } from 'next/router';
 import { Countdown } from 'react-daisyui';
@@ -7,6 +7,7 @@ import { useSession } from 'next-auth/react';
 import { nextauthOpts } from '../../../shared/next-auth';
 import { unstable_getServerSession } from 'next-auth';
 import type { GetServerSideProps } from 'next';
+import isEmpty from 'lodash/isEmpty';
 
 import examBg from '../../public/image/exam-vector.webp';
 import { getDetailExam } from '../../helper/Api/General';
@@ -66,11 +67,33 @@ const TryoutDetail: FC<ITryoutProps> = () => {
 
    const paginationBottom = () => {
       return examActivity?.exam?.map((val, i) => {
+         const emptyAnswer = isEmpty(examActivity?.exam[i]?.answer);
+         const emptyIndecisive = isEmpty(examActivity?.exam[i]?.indecisive);
+
+         const checkCondition = () => {
+            let result = 'btn-outline';
+            if (activeQuestion == i) {
+               result = 'btn-primary';
+            } else if (
+               emptyAnswer == false &&
+               examActivity?.exam[i]?.indecisive == true
+            ) {
+               result = 'btn-warning';
+            } else if (
+               emptyAnswer == false &&
+               examActivity?.exam[i]?.indecisive == false
+            ) {
+               result = 'btn-success';
+            } else if (emptyAnswer == false && emptyIndecisive == true) {
+               result = 'btn-success';
+            }
+
+            return result;
+         };
          return (
             <button
-               className={`btn ${
-                  activeQuestion == i ? 'btn-primary' : 'btn-outline'
-               } m-1 h-2 w-3 `}
+               key={i}
+               className={`btn ${checkCondition()} m-1 h-2 w-3 `}
                onClick={() => selectQuestion(i)}
             >
                {i + 1}
@@ -146,7 +169,17 @@ const TryoutDetail: FC<ITryoutProps> = () => {
       setExamActivity(dataTemp);
    };
 
-   // console.log('isi examActivity : ', examActivity);
+   const doubtCondition = () => {
+      let result;
+      if (examActivity?.exam[activeQuestion]?.answer == undefined) {
+         result = true;
+      } else if (examActivity?.exam[activeQuestion]?.answer != '') {
+         result = false;
+      }
+      return result;
+   };
+
+   console.log('isi examActivity : ', examActivity);
 
    return (
       <div className="h-screen">
@@ -248,14 +281,26 @@ const TryoutDetail: FC<ITryoutProps> = () => {
                            </div>
                         </div>
                      </div>
-                     <div className="flex justify-center">
-                        <button
-                           className="btn btn-wide"
-                           onClick={() => router.push('/dashboard')}
-                        >
-                           Back to dashboard
-                        </button>
-                     </div>
+                     {startTryout && (
+                        <div className="flex justify-center pt-5">
+                           <button
+                              className="btn btn-success btn-wide text-lg"
+                              // onClick={() => router.push('/dashboard')}
+                           >
+                              Selesai Ujian
+                           </button>
+                        </div>
+                     )}
+                     {!startTryout && (
+                        <div className="flex justify-center">
+                           <button
+                              className="btn btn-wide"
+                              onClick={() => router.push('/dashboard')}
+                           >
+                              Back to dashboard
+                           </button>
+                        </div>
+                     )}
                   </div>
                </div>
                <div className="w-9/12">
@@ -299,20 +344,22 @@ const TryoutDetail: FC<ITryoutProps> = () => {
                            {examActivity?.exam.map((val, i) => {
                               if (activeQuestion == i)
                                  return (
-                                    <>
+                                    <Fragment key={i}>
                                        <div className="text-xl font-bold">
                                           {i + 1}.
                                        </div>
                                        <div
                                           className={`col-span-11 ${
-                                             val?.indecisive ? 'bg-warning' : ''
+                                             val?.indecisive
+                                                ? 'border-2 border-warning'
+                                                : ''
                                           }`}
                                        >
                                           <div className="">{val.title}</div>
                                           <div className="mt-3">
                                              {val.options.map((data, index) => {
                                                 return (
-                                                   <>
+                                                   <Fragment key={index}>
                                                       <div className="form-control">
                                                          <label className="label flex cursor-pointer items-start justify-start py-2">
                                                             <span className="label-text">
@@ -350,12 +397,12 @@ const TryoutDetail: FC<ITryoutProps> = () => {
                                                             </span>
                                                          </label>
                                                       </div>
-                                                   </>
+                                                   </Fragment>
                                                 );
                                              })}
                                           </div>
                                        </div>
-                                    </>
+                                    </Fragment>
                                  );
                            })}
                         </div>
@@ -366,11 +413,11 @@ const TryoutDetail: FC<ITryoutProps> = () => {
                                     className="btn"
                                     onClick={() => prevQuestion()}
                                  >
-                                    &#60;&#60; Previous
+                                    &#60; Previous
                                  </button>
                                  <button
                                     className="btn btn-warning"
-                                    // disabled={}
+                                    disabled={doubtCondition()}
                                     onClick={() =>
                                        toggleIndecisive(activeQuestion)
                                     }
@@ -381,7 +428,7 @@ const TryoutDetail: FC<ITryoutProps> = () => {
                                     className="btn"
                                     onClick={() => nextQuestion()}
                                  >
-                                    Next &#62;&#62;
+                                    Next &#62;
                                  </button>
                               </div>
                            </div>
