@@ -31,19 +31,20 @@ const TryoutDetail: FC<ITryoutProps> = () => {
       indecisive: 0,
       notAnswered: 0,
       startedAt: '',
-      answer: [{}],
+      exam: [],
    });
+   const [activeQuestion, setActiveQuestion] = useState(0);
 
    useEffect(() => {
-      getExamData();
       if (startTryout) {
          // countDownTimer();
+      } else {
+         getExamData();
       }
    }, [startTryout]);
 
    const getExamData = async () => {
       const { data } = await getDetailExam(router.query.slug);
-      console.log('result : ', data);
       const body = {
          examId: data._id,
          totalQuestion: data.questions.length,
@@ -51,7 +52,7 @@ const TryoutDetail: FC<ITryoutProps> = () => {
          indecisive: 0,
          notAnswered: 0,
          startedAt: '',
-         answer: [{}],
+         exam: data.questions,
       };
       setLocalStorage('examActivity', encryptData(body));
       setExamActivity(body);
@@ -59,7 +60,26 @@ const TryoutDetail: FC<ITryoutProps> = () => {
       return data;
    };
 
+   const selectQuestion = (id) => {
+      setActiveQuestion(id);
+   };
+
    const paginationBottom = () => {
+      return examActivity?.exam?.map((val, i) => {
+         return (
+            <button
+               className={`btn ${
+                  activeQuestion == i ? 'btn-primary' : 'btn-outline'
+               } m-1 h-2 w-3 `}
+               onClick={() => selectQuestion(i)}
+            >
+               {i + 1}
+            </button>
+         );
+      });
+   };
+
+   const paginationBottomOld = () => {
       const totalPage = [];
       for (let index = 0; index < 100; index++) {
          if (index == 4) {
@@ -91,9 +111,13 @@ const TryoutDetail: FC<ITryoutProps> = () => {
       return totalPage;
    };
 
+   const optionsFormat = (index) => {
+      const format = { 0: 'a', 1: 'b', 2: 'c', 3: 'd', 4: 'e' };
+      return format[index];
+   };
+
    const startExam = () => {
       setStartTryout(true);
-      console.log('dayjs() : ', dayjs().format());
       const body = {
          ...examActivity,
          startedAt: dayjs().format(),
@@ -101,7 +125,28 @@ const TryoutDetail: FC<ITryoutProps> = () => {
       setExamActivity(body);
    };
 
-   console.log('isi examActivity : ', examActivity);
+   const prevQuestion = () => {
+      if (activeQuestion + 1 !== 1) setActiveQuestion(activeQuestion - 1);
+   };
+
+   const nextQuestion = () => {
+      if (examActivity.exam.length != activeQuestion + 1)
+         setActiveQuestion(activeQuestion + 1);
+   };
+
+   const toggleAnswer = (e, index) => {
+      const dataTemp = { ...examActivity };
+      dataTemp.exam[index].answer = e.currentTarget.value;
+      setExamActivity(dataTemp);
+   };
+
+   const toggleIndecisive = (index) => {
+      const dataTemp = { ...examActivity };
+      dataTemp.exam[index].indecisive = !dataTemp.exam[index].indecisive;
+      setExamActivity(dataTemp);
+   };
+
+   // console.log('isi examActivity : ', examActivity);
 
    return (
       <div className="h-screen">
@@ -251,6 +296,109 @@ const TryoutDetail: FC<ITryoutProps> = () => {
                            <CountDownExam start={startTryout} />
                         </div>
                         <div className="mt-8 grid grid-cols-12 pr-20">
+                           {examActivity?.exam.map((val, i) => {
+                              if (activeQuestion == i)
+                                 return (
+                                    <>
+                                       <div className="text-xl font-bold">
+                                          {i + 1}.
+                                       </div>
+                                       <div
+                                          className={`col-span-11 ${
+                                             val?.indecisive ? 'bg-warning' : ''
+                                          }`}
+                                       >
+                                          <div className="">{val.title}</div>
+                                          <div className="mt-3">
+                                             {val.options.map((data, index) => {
+                                                return (
+                                                   <>
+                                                      <div className="form-control">
+                                                         <label className="label flex cursor-pointer items-start justify-start py-2">
+                                                            <span className="label-text">
+                                                               {optionsFormat(
+                                                                  index,
+                                                               )}
+                                                               .
+                                                            </span>
+                                                            <div className="px-2">
+                                                               <input
+                                                                  type="radio"
+                                                                  name="radio-1"
+                                                                  className="radio px-3 checked:bg-blue-500"
+                                                                  value={
+                                                                     data._id
+                                                                  }
+                                                                  checked={
+                                                                     examActivity
+                                                                        .exam[i]
+                                                                        ?.answer ==
+                                                                     data._id
+                                                                  }
+                                                                  onChange={(
+                                                                     e,
+                                                                  ) =>
+                                                                     toggleAnswer(
+                                                                        e,
+                                                                        i,
+                                                                     )
+                                                                  }
+                                                               />
+                                                            </div>
+                                                            <span className="label-text">
+                                                               {data.value}
+                                                            </span>
+                                                         </label>
+                                                      </div>
+                                                   </>
+                                                );
+                                             })}
+                                          </div>
+                                       </div>
+                                    </>
+                                 );
+                           })}
+                        </div>
+                        <div className="px-20">
+                           <div className="mt-10">
+                              <div className="flex w-full justify-between">
+                                 <button
+                                    className="btn"
+                                    onClick={() => prevQuestion()}
+                                 >
+                                    &#60;&#60; Previous
+                                 </button>
+                                 <button
+                                    className="btn btn-warning"
+                                    // disabled={}
+                                    onClick={() =>
+                                       toggleIndecisive(activeQuestion)
+                                    }
+                                 >
+                                    Ragu-ragu
+                                 </button>
+                                 <button
+                                    className="btn"
+                                    onClick={() => nextQuestion()}
+                                 >
+                                    Next &#62;&#62;
+                                 </button>
+                              </div>
+                           </div>
+                           <div className="my-10 flex w-full justify-center">
+                              <div className="text-center">
+                                 {paginationBottom()}
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  )}
+                  {/* {startTryout && (
+                     <div className="h-full w-full">
+                        <div className="flex items-center justify-center">
+                           <CountDownExam start={startTryout} />
+                        </div>
+                        <div className="mt-8 grid grid-cols-12 pr-20">
                            <div className="text-xl font-bold">8.</div>
                            <div className="col-span-11">
                               <div className="">
@@ -323,28 +471,30 @@ const TryoutDetail: FC<ITryoutProps> = () => {
                                     <div>feugiat malesuada</div>
                                  </div>
                               </div>
-                              <div className="mt-10">
-                                 <div className="flex w-full justify-between">
-                                    <button className="btn">
-                                       &#60;&#60; Previous
-                                    </button>
-                                    <button className="btn btn-warning">
-                                       Ragu-ragu
-                                    </button>
-                                    <button className="btn">
-                                       Next &#62;&#62;
-                                    </button>
-                                 </div>
+                           </div>
+                        </div>
+                        <div className='px-20'>
+                           <div className="mt-10">
+                              <div className="flex w-full justify-between">
+                                 <button className="btn">
+                                    &#60;&#60; Previous
+                                 </button>
+                                 <button className="btn btn-warning">
+                                    Ragu-ragu
+                                 </button>
+                                 <button className="btn">
+                                    Next &#62;&#62;
+                                 </button>
                               </div>
-                              <div className="my-10 flex w-full justify-center">
-                                 <div className="text-center">
-                                    {paginationBottom()}
-                                 </div>
+                           </div>
+                           <div className="my-10 flex w-full justify-center">
+                              <div className="text-center">
+                                 {paginationBottom()}
                               </div>
                            </div>
                         </div>
                      </div>
-                  )}
+                  )} */}
                </div>
             </div>
             <Footer />
