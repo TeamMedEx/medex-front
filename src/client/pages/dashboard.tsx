@@ -9,7 +9,7 @@ import heroBg from '../public/image/bg-hero.jpg';
 import SideNav from '../components/Sidenav';
 import HeaderPage from '../components/HeaderPage';
 import { unstable_getServerSession } from 'next-auth';
-import { nextauthOpts } from '../../shared/next-auth';
+import { nextauthOpts } from '../../shared/next-auth/options';
 import { useSelector, useDispatch } from 'react-redux';
 import type { RootState } from '../redux/configureStore';
 import { decrement, increment, incrementByAmount } from '../redux/counter';

@@ -3,7 +3,7 @@ import type { GetServerSideProps } from 'next';
 import Footer from '../../components/Footer';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
-import { nextauthOpts } from '../../../shared/next-auth';
+import { nextauthOpts } from '../../../shared/next-auth/options';
 import { unstable_getServerSession } from 'next-auth';
 
 import SideNav from '../../components/Sidenav';

@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { Countdown } from 'react-daisyui';
 import HeaderPage from '../../components/HeaderPage';
 import { useSession } from 'next-auth/react';
-import { nextauthOpts } from '../../../shared/next-auth';
+import { nextauthOpts } from '../../../shared/next-auth/options';
 import { unstable_getServerSession } from 'next-auth';
 import type { GetServerSideProps } from 'next';
 
@@ -203,7 +203,7 @@ const TryoutDetail: FC<ITryoutProps> = () => {
                   {!startTryout && (
                      <div>
                         <div className="hero rounded-lg bg-base-200">
-                           <div className="hero-content flex-col lg:flex-row-reverse py-14 px-10">
+                           <div className="hero-content flex-col py-14 px-10 lg:flex-row-reverse">
                               <img
                                  src={`${examBg.src}`}
                                  className="max-w-sm rounded-lg shadow-2xl"
