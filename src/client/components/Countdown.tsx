@@ -9,10 +9,14 @@ import React, {
 import { Countdown } from 'react-daisyui';
 
 interface OwnProps {
-   start: Boolean;
+   start: boolean;
+   duration: number;
 }
 
-const CountDownExam: FC<PropsWithChildren<OwnProps>> = ({ start }) => {
+const CountDownExam: FC<PropsWithChildren<OwnProps>> = ({
+   start,
+   duration,
+}) => {
    const [hoursTime, setHoursTime] = useState(0);
    const [minutesTime, setMinutesTime] = useState(0);
    const [secondsTime, setSecondsTime] = useState(0);
@@ -26,7 +30,8 @@ const CountDownExam: FC<PropsWithChildren<OwnProps>> = ({ start }) => {
    let myTimer;
    const countDownTimer = () => {
       myTimer = setInterval(myClock, 1000);
-      let c = 3610; //Initially set to 1 hour
+      // let c = 3610; //Initially set to 1 hour
+      let c = duration;
       const initMinute = ((c - (c % 60)) / 60) % 60;
       setMinutesTime(initMinute);
       setHoursTime(((c - (c % 60)) / 60 - initMinute) / 60);

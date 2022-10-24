@@ -96,3 +96,7 @@ export const isEmptyValues = (value) => {
       (typeof value === 'string' && value.trim().length === 0)
    );
 };
+
+export const minuteToSecond = (value) => {
+   return value * 60;
+};
