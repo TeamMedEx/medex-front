@@ -15,7 +15,7 @@ export const API_CALL = async (
          baseURL: process.env.MEDEX_BASEAPI_URI,
          headers: {
             'Content-Type': contentType,
-            Authorization: session?.accessToken,
+            Authorization: session.accessToken,
             timezone: timezone,
             countrycode: 'ID',
             ...(option?.headers ?? {}),
