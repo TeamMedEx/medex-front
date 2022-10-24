@@ -11,7 +11,7 @@ import isEmpty from 'lodash/isEmpty';
 
 import examBg from '../../public/image/exam-vector.webp';
 import { getDetailExam } from '../../helper/Api/General';
-import { encryptData } from '../../helper/Common';
+import { encryptData, isEmptyValues } from '../../helper/Common';
 import { setLocalStorage } from '../../helper/LocalStorage';
 import dayjs from 'dayjs';
 import CountDownExam from '../../components/Countdown';
@@ -51,7 +51,7 @@ const TryoutDetail: FC<ITryoutProps> = () => {
          totalQuestion: data.questions.length,
          totalAnswered: 0,
          indecisive: 0,
-         notAnswered: 0,
+         notAnswered: data.questions.length,
          startedAt: '',
          exam: data.questions,
       };
@@ -102,38 +102,6 @@ const TryoutDetail: FC<ITryoutProps> = () => {
       });
    };
 
-   const paginationBottomOld = () => {
-      const totalPage = [];
-      for (let index = 0; index < 100; index++) {
-         if (index == 4) {
-            totalPage.push(
-               <button className="btn btn-warning m-1 h-2 w-3">
-                  {index + 1}
-               </button>,
-            );
-         } else if (index == 7) {
-            totalPage.push(
-               <button className="btn btn-primary m-1 h-2 w-3">
-                  {index + 1}
-               </button>,
-            );
-         } else if (index < 7) {
-            totalPage.push(
-               <button className="btn btn-success m-1 h-2 w-3">
-                  {index + 1}
-               </button>,
-            );
-         } else {
-            totalPage.push(
-               <button className="btn btn-outline m-1 h-2 w-3">
-                  {index + 1}
-               </button>,
-            );
-         }
-      }
-      return totalPage;
-   };
-
    const optionsFormat = (index) => {
       const format = { 0: 'a', 1: 'b', 2: 'c', 3: 'd', 4: 'e' };
       return format[index];
@@ -157,16 +125,47 @@ const TryoutDetail: FC<ITryoutProps> = () => {
          setActiveQuestion(activeQuestion + 1);
    };
 
+   const checkStatsCount = (data) => {
+      let totalAnswered = 0;
+      let totalIndecisive = 0;
+
+      data?.exam?.forEach((val, i) => {
+         if (!isEmptyValues(val.answer) && isEmptyValues(val.indecisive)) {
+            totalAnswered += 1;
+         } else if (
+            !isEmptyValues(val.answer) &&
+            !isEmptyValues(val.indecisive) &&
+            val?.indecisive == false
+         ) {
+            totalAnswered += 1;
+         } else if (
+            !isEmptyValues(val.answer) &&
+            !isEmptyValues(val.indecisive) &&
+            val.indecisive == true
+         ) {
+            totalIndecisive += 1;
+         }
+      });
+      data.totalAnswered = totalAnswered;
+      data.indecisive = totalIndecisive;
+      data.notAnswered = data.totalQuestion - (totalAnswered + totalIndecisive);
+      return data;
+   };
+
    const toggleAnswer = (e, index) => {
       const dataTemp = { ...examActivity };
       dataTemp.exam[index].answer = e.currentTarget.value;
-      setExamActivity(dataTemp);
+
+      const dataAfterCheck = checkStatsCount(dataTemp);
+
+      setExamActivity(dataAfterCheck);
    };
 
    const toggleIndecisive = (index) => {
       const dataTemp = { ...examActivity };
       dataTemp.exam[index].indecisive = !dataTemp.exam[index].indecisive;
-      setExamActivity(dataTemp);
+      const dataAfterCheck = checkStatsCount(dataTemp);
+      setExamActivity(dataAfterCheck);
    };
 
    const doubtCondition = () => {

@@ -66,16 +66,16 @@ const Dashboard: NextPage = () => {
                         </Hero>
                         <div className="grid grid-cols-3 gap-4">
                            <div className="w-full rounded-md border-2 p-4 shadow-md">
-                              <div>Complete Course</div>
-                              <div className="text-2xl font-bold">28</div>
+                              <div>Complete Tryout</div>
+                              <div className="text-2xl font-bold">12</div>
                            </div>
                            <div className="w-full rounded-md border-2 p-4 shadow-md">
-                              <div>Complete Course</div>
-                              <div className="text-2xl font-bold">28</div>
+                              <div>Complete Learning</div>
+                              <div className="text-2xl font-bold">7</div>
                            </div>
                            <div className="w-full rounded-md border-2 p-4 shadow-md">
-                              <div>Complete Course</div>
-                              <div className="text-2xl font-bold">28</div>
+                              <div>Complete UKMPPD</div>
+                              <div className="text-2xl font-bold">2</div>
                            </div>
                         </div>
                         <div className="grid grid-cols-3 gap-4 pt-10">
