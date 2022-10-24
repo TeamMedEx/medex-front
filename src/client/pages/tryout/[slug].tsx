@@ -1,15 +1,20 @@
 import { FC, useEffect, useState } from 'react';
-import Footer from '../components/Footer';
+import Footer from '../../components/Footer';
 import { useRouter } from 'next/router';
 import { Countdown } from 'react-daisyui';
-import HeaderPage from '../components/HeaderPage';
+import HeaderPage from '../../components/HeaderPage';
 import { useSession } from 'next-auth/react';
+import { nextauthOpts } from '../../../shared/next-auth';
+import { unstable_getServerSession } from 'next-auth';
+import type { GetServerSideProps } from 'next';
+
+import examBg from '../../public/image/exam-vector.webp';
 
 type ITryoutProps = {
    is_logged_in: boolean;
 };
 
-const Tryout: FC<ITryoutProps> = () => {
+const TryoutDetail: FC<ITryoutProps> = () => {
    const { data: session } = useSession();
    const router = useRouter();
 
@@ -17,13 +22,17 @@ const Tryout: FC<ITryoutProps> = () => {
    const [minutesTime, setMinutesTime] = useState(0);
    const [secondsTime, setSecondsTime] = useState(0);
 
+   const [startTryout, setStartTryout] = useState(false);
+
    useEffect(() => {
       if (!session) router.push('/login');
    }, []);
 
    useEffect(() => {
-      countDownTimer();
-   }, []);
+      if (startTryout) {
+         countDownTimer();
+      }
+   }, [startTryout]);
 
    let myTimer;
    const countDownTimer = () => {
@@ -90,7 +99,7 @@ const Tryout: FC<ITryoutProps> = () => {
    return (
       <div className="h-screen">
          <main className="h-full w-full">
-            <div className="flex w-full">
+            <div className="flex w-full px-5">
                <div className="w-3/12">
                   <div className="mt-5 flex justify-center">
                      <img
@@ -191,129 +200,160 @@ const Tryout: FC<ITryoutProps> = () => {
                </div>
                <div className="w-9/12">
                   <HeaderPage title={'Tryout Paket 11 Juli 2022'} />
-                  <div className="h-full w-full">
-                     <div className="flex items-center justify-center">
-                        {/* <div className="text-2xl font-semibold">
-                                    Tryout Paket 11 Juli 2022
-                                </div> */}
-                        {/* <div className="text-2xl font-semibold">3:10:22</div> */}
-                        <div className="grid auto-cols-max grid-flow-col gap-5 text-center">
-                           <div className="rounded-box flex flex-col bg-rose-700 p-2 text-neutral-content">
-                              <Countdown
-                                 className="font-mono text-5xl"
-                                 value={hoursTime}
+                  {!startTryout && (
+                     <div>
+                        <div className="hero rounded-lg bg-base-200">
+                           <div className="hero-content flex-col lg:flex-row-reverse py-14 px-10">
+                              <img
+                                 src={`${examBg.src}`}
+                                 className="max-w-sm rounded-lg shadow-2xl"
                               />
-                              hours
-                           </div>
-                           <div className="rounded-box flex flex-col bg-rose-700 p-2 text-neutral-content">
-                              <Countdown
-                                 className="font-mono text-5xl"
-                                 value={minutesTime}
-                              />
-                              min
-                           </div>
-                           <div className="rounded-box flex flex-col bg-rose-700 p-2 text-neutral-content">
-                              <Countdown
-                                 className="font-mono text-5xl"
-                                 value={secondsTime}
-                              />
-                              sec
-                           </div>
-                        </div>
-                     </div>
-                     <div className="mt-8 grid grid-cols-12 pr-20">
-                        <div className="text-xl font-bold">8.</div>
-                        <div className="col-span-11">
-                           <div className="">
-                              Lorem ipsum dolor sit amet, consectetur adipiscing
-                              elit. Donec feugiat odio feugiat, mattis libero
-                              vitae, porttitor mi. Sed nec elit ex. Donec
-                              mattis, turpis id interdum feugiat, augue dolor
-                              vulputate ipsum, in porta lorem nulla ut justo.
-                              Nunc eget pellentesque tortor, sed ornare sapien.
-                              Curabitur semper mauris quis tellus mollis, vitae
-                              imperdiet quam sodales. Nunc ultrices maximus orci
-                              in lacinia. Interdum et malesuada fames ac ante
-                              ipsum primis in faucibus.
-                           </div>
-                           <div className="mt-3">
-                              <div className="flex items-start py-2">
-                                 <div>a.</div>
-                                 <div className="px-2">
-                                    <input
-                                       type="radio"
-                                       name="radio-1"
-                                       className="radio px-3"
-                                    />
-                                 </div>{' '}
-                                 <div>feugiat odio</div>
-                              </div>
-                              <div className="flex items-start py-2">
-                                 <div>b.</div>
-                                 <div className="px-2">
-                                    <input
-                                       type="radio"
-                                       name="radio-1"
-                                       className="radio px-3"
-                                    />
-                                 </div>{' '}
-                                 <div>feugiat ipsum</div>
-                              </div>
-                              <div className="flex items-start py-2">
-                                 <div>c.</div>
-                                 <div className="px-2">
-                                    <input
-                                       type="radio"
-                                       name="radio-1"
-                                       className="radio px-3"
-                                    />
-                                 </div>{' '}
-                                 <div>feugiat lacinia</div>
-                              </div>
-                              <div className="flex items-start py-2">
-                                 <div>d.</div>
-                                 <div className="px-2">
-                                    <input
-                                       type="radio"
-                                       name="radio-1"
-                                       className="radio px-3"
-                                    />
-                                 </div>{' '}
-                                 <div>feugiat sapien</div>
-                              </div>
-                              <div className="flex items-start py-2">
-                                 <div>e.</div>
-                                 <div className="px-2">
-                                    <input
-                                       type="radio"
-                                       name="radio-1"
-                                       className="radio px-3"
-                                    />
-                                 </div>{' '}
-                                 <div>feugiat malesuada</div>
-                              </div>
-                           </div>
-                           <div className="mt-10">
-                              <div className="flex w-full justify-between">
-                                 <button className="btn">
-                                    &#60;&#60; Previous
-                                 </button>
-                                 <button className="btn btn-warning">
-                                    Ragu-ragu
-                                 </button>
-                                 <button className="btn">
-                                    Next &#62;&#62;
-                                 </button>
-                              </div>
-                           </div>
-                           <div className="my-10 flex w-full justify-center">
-                              <div className="text-center">
-                                 {paginationBottom()}
+                              <div>
+                                 <h1 className="text-4xl font-bold">
+                                    Sudah siap untuk memulai Tryout?{' '}
+                                 </h1>
+                                 <p className="py-6">
+                                    Jika sudah siap untuk memulai ujian,
+                                    silahkan klik tombol mulai ujian dibawah
+                                    ini, selamat mengerjakan!
+                                 </p>
+                                 <div className="flex justify-center">
+                                    <button
+                                       className="btn btn-primary"
+                                       onClick={() => {
+                                          setStartTryout(true);
+                                       }}
+                                    >
+                                       Mulai ujian
+                                    </button>
+                                 </div>
                               </div>
                            </div>
                         </div>
                      </div>
-                  </div>
+                  )}
+                  {startTryout && (
+                     <div className="h-full w-full">
+                        <div className="flex items-center justify-center">
+                           <div className="grid auto-cols-max grid-flow-col gap-5 text-center">
+                              <div className="rounded-box flex flex-col bg-rose-700 p-2 text-neutral-content">
+                                 <Countdown
+                                    className="font-mono text-5xl"
+                                    value={hoursTime}
+                                 />
+                                 hours
+                              </div>
+                              <div className="rounded-box flex flex-col bg-rose-700 p-2 text-neutral-content">
+                                 <Countdown
+                                    className="font-mono text-5xl"
+                                    value={minutesTime}
+                                 />
+                                 min
+                              </div>
+                              <div className="rounded-box flex flex-col bg-rose-700 p-2 text-neutral-content">
+                                 <Countdown
+                                    className="font-mono text-5xl"
+                                    value={secondsTime}
+                                 />
+                                 sec
+                              </div>
+                           </div>
+                        </div>
+                        <div className="mt-8 grid grid-cols-12 pr-20">
+                           <div className="text-xl font-bold">8.</div>
+                           <div className="col-span-11">
+                              <div className="">
+                                 Lorem ipsum dolor sit amet, consectetur
+                                 adipiscing elit. Donec feugiat odio feugiat,
+                                 mattis libero vitae, porttitor mi. Sed nec elit
+                                 ex. Donec mattis, turpis id interdum feugiat,
+                                 augue dolor vulputate ipsum, in porta lorem
+                                 nulla ut justo. Nunc eget pellentesque tortor,
+                                 sed ornare sapien. Curabitur semper mauris quis
+                                 tellus mollis, vitae imperdiet quam sodales.
+                                 Nunc ultrices maximus orci in lacinia. Interdum
+                                 et malesuada fames ac ante ipsum primis in
+                                 faucibus.
+                              </div>
+                              <div className="mt-3">
+                                 <div className="flex items-start py-2">
+                                    <div>a.</div>
+                                    <div className="px-2">
+                                       <input
+                                          type="radio"
+                                          name="radio-1"
+                                          className="radio px-3"
+                                       />
+                                    </div>{' '}
+                                    <div>feugiat odio</div>
+                                 </div>
+                                 <div className="flex items-start py-2">
+                                    <div>b.</div>
+                                    <div className="px-2">
+                                       <input
+                                          type="radio"
+                                          name="radio-1"
+                                          className="radio px-3"
+                                       />
+                                    </div>{' '}
+                                    <div>feugiat ipsum</div>
+                                 </div>
+                                 <div className="flex items-start py-2">
+                                    <div>c.</div>
+                                    <div className="px-2">
+                                       <input
+                                          type="radio"
+                                          name="radio-1"
+                                          className="radio px-3"
+                                       />
+                                    </div>{' '}
+                                    <div>feugiat lacinia</div>
+                                 </div>
+                                 <div className="flex items-start py-2">
+                                    <div>d.</div>
+                                    <div className="px-2">
+                                       <input
+                                          type="radio"
+                                          name="radio-1"
+                                          className="radio px-3"
+                                       />
+                                    </div>{' '}
+                                    <div>feugiat sapien</div>
+                                 </div>
+                                 <div className="flex items-start py-2">
+                                    <div>e.</div>
+                                    <div className="px-2">
+                                       <input
+                                          type="radio"
+                                          name="radio-1"
+                                          className="radio px-3"
+                                       />
+                                    </div>{' '}
+                                    <div>feugiat malesuada</div>
+                                 </div>
+                              </div>
+                              <div className="mt-10">
+                                 <div className="flex w-full justify-between">
+                                    <button className="btn">
+                                       &#60;&#60; Previous
+                                    </button>
+                                    <button className="btn btn-warning">
+                                       Ragu-ragu
+                                    </button>
+                                    <button className="btn">
+                                       Next &#62;&#62;
+                                    </button>
+                                 </div>
+                              </div>
+                              <div className="my-10 flex w-full justify-center">
+                                 <div className="text-center">
+                                    {paginationBottom()}
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  )}
                </div>
             </div>
             <Footer />
@@ -322,4 +362,25 @@ const Tryout: FC<ITryoutProps> = () => {
    );
 };
 
-export default Tryout;
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+   const session = await unstable_getServerSession(
+      ctx.req,
+      ctx.res,
+      nextauthOpts,
+   );
+
+   if (!session) {
+      return {
+         redirect: {
+            destination: '/login',
+            permanent: false,
+         },
+      };
+   }
+
+   return {
+      props: { session },
+   };
+};
+
+export default TryoutDetail;
