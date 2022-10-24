@@ -399,7 +399,7 @@ const TryoutDetail: FC<ITryoutProps> = () => {
                                                 : ''
                                           }`}
                                        >
-                                          <div className="">{val.title}</div>
+                                          <div className="">{val.title || val.description}</div>
                                           <div className="mt-3">
                                              {val.options.map((data, index) => {
                                                 return (
