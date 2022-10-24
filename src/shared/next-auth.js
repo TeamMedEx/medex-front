@@ -53,13 +53,13 @@ const callbacks = {
           * if success replace token and refresh_token from google
           */
          if (!profile.email_verified) return false;
-         const data = {
-            email: profile.email,
-            name: profile.name,
-            refreshToken: account.refresh_token,
-            expiresAt: account.expires_at,
-            source: 'google',
-         };
+         // const data = {
+         //    email: profile.email,
+         //    name: profile.name,
+         //    refreshToken: account.refresh_token,
+         //    expiresAt: account.expires_at,
+         //    source: 'google',
+         // };
          // const registerUrl = `${process.env.MEDEX_BASEAPI_URI}${process.env.MEDEX_REGISTER_URI}`;
          try {
             // await axios.post(registerUrl, data);
