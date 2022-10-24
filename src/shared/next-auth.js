@@ -72,7 +72,7 @@ const callbacks = {
       }
    },
    jwt: async ({ token, user, account }) => {
-      if (user && account?.provider == 'credentials') {
+      if (user && account.provider == 'credentials') {
          const localdate = new Date(user.expiresAt).toLocaleString();
          const timestamp = Number(Date.parse(localdate)) / 1000;
          token = {
@@ -81,7 +81,7 @@ const callbacks = {
             refreshToken: user.refreshToken,
             tokenExpires: timestamp,
          };
-      } else if (user && account?.provider == 'google') {
+      } else if (user && account.provider == 'google') {
          token = {
             user: user,
             accessToken: account.access_token,
