@@ -1,10 +1,4 @@
-import React, {
-   FC,
-   useEffect,
-   useState,
-   Component,
-   PropsWithChildren,
-} from 'react';
+import React, { FC, useEffect, useState, Component, PropsWithChildren } from 'react';
 
 import { Countdown } from 'react-daisyui';
 
@@ -14,11 +8,7 @@ interface OwnProps {
    timeout?: (val) => unknown;
 }
 
-const CountDownExam: FC<PropsWithChildren<OwnProps>> = ({
-   start,
-   duration,
-   timeout,
-}) => {
+const CountDownExam: FC<PropsWithChildren<OwnProps>> = ({ start, duration, timeout }) => {
    const [hoursTime, setHoursTime] = useState(0);
    const [minutesTime, setMinutesTime] = useState(0);
    const [secondsTime, setSecondsTime] = useState(0);

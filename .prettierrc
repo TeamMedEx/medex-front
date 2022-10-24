@@ -3,5 +3,6 @@
   "trailingComma": "all",
   "tailwindConfig": "./src/client/tailwind.config.js",
   "tabWidth": 3,
-  "bracketSameLine": false
+  "bracketSameLine": false,
+  "printWidth": 100
 }

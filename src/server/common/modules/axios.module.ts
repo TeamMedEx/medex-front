@@ -24,12 +24,9 @@ export class AxiosModule extends BaseHttpModule implements OnModuleInit {
             const { config } = response;
             config['metadata'] = { ...config['metadata'], endDate: new Date() };
             const duration =
-               config['metadata'].endDate.getTime() -
-               config['metadata'].startDate.getTime();
+               config['metadata'].endDate.getTime() - config['metadata'].startDate.getTime();
 
-            logger.log(
-               `${config.method.toUpperCase()} ${config.url} ${duration}ms`,
-            );
+            logger.log(`${config.method.toUpperCase()} ${config.url} ${duration}ms`);
 
             return response;
          },

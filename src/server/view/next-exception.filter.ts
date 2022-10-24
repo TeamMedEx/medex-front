@@ -1,9 +1,4 @@
-import {
-   ExceptionFilter,
-   Catch,
-   ArgumentsHost,
-   HttpException,
-} from '@nestjs/common';
+import { ExceptionFilter, Catch, ArgumentsHost, HttpException } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { parse } from 'url';
 import { ViewService } from './view.service';
@@ -17,8 +12,6 @@ export class NextExceptionFilter implements ExceptionFilter {
       const request = ctx.getRequest<Request>();
 
       const parsedUrl = parse(request.url, true);
-      this.viewService
-         .getNextServer()
-         .render(request, response, parsedUrl.path, parsedUrl.query);
+      this.viewService.getNextServer().render(request, response, parsedUrl.path, parsedUrl.query);
    }
 }

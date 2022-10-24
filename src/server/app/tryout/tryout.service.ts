@@ -34,9 +34,7 @@ export class TryoutService extends Medex {
       try {
          const { data } = await this.httpService.axiosRef({
             method: 'GET',
-            url: `${this.configService.get<string>('MEDEX_BASEAPI_URI')}/exam/${
-               param.oid
-            }/detail`,
+            url: `${this.configService.get<string>('MEDEX_BASEAPI_URI')}/exam/${param.oid}/detail`,
             headers: { 'x-access-token': header.authorization },
          });
          return data;
@@ -49,9 +47,7 @@ export class TryoutService extends Medex {
       try {
          const body = {
             method: 'POST',
-            url: `${this.configService.get<string>('MEDEX_BASEAPI_URI')}/exam/${
-               param.oid
-            }/submit`,
+            url: `${this.configService.get<string>('MEDEX_BASEAPI_URI')}/exam/${param.oid}/submit`,
             headers: { 'x-access-token': header.authorization },
             data: req.body,
          };

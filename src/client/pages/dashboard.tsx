@@ -55,9 +55,8 @@ const Dashboard: NextPage = () => {
                                     Next UKMPPD Pada Tanggal 20 Desember 2022
                                  </h1>
                                  <p className="py-6">
-                                    Persiapkan dirimu dengan maksimal untuk
-                                    menghadapi ujian berikutnya, yuk pelajari
-                                    semua materinya di platform Med-Ex!
+                                    Persiapkan dirimu dengan maksimal untuk menghadapi ujian
+                                    berikutnya, yuk pelajari semua materinya di platform Med-Ex!
                                  </p>
 
                                  <Button color="primary">Get Started</Button>
@@ -79,42 +78,22 @@ const Dashboard: NextPage = () => {
                            </div>
                         </div>
                         <div className="grid grid-cols-3 gap-4 pt-10">
-                           <Card
-                              className="cursor-pointer"
-                              onClick={() => router.push('/tryout')}
-                           >
-                              <Card.Image
-                                 src="/image/bg-exam-medex-2.jpg"
-                                 alt="Shoes"
-                              />
+                           <Card className="cursor-pointer" onClick={() => router.push('/tryout')}>
+                              <Card.Image src="/image/bg-exam-medex-2.jpg" alt="Shoes" />
                               <Card.Body>
                                  <Card.Title tag="h2">Tryout</Card.Title>
-                                 <p>
-                                    Daftar simulasi tryout UKMPPD, latihan
-                                    sebelum ujian resmi.
-                                 </p>
+                                 <p>Daftar simulasi tryout UKMPPD, latihan sebelum ujian resmi.</p>
                               </Card.Body>
                            </Card>
                            <Card className="cursor-pointer">
-                              <Card.Image
-                                 src="/image/bg-exam-medex-3.jpg"
-                                 alt="Shoes"
-                              />
+                              <Card.Image src="/image/bg-exam-medex-3.jpg" alt="Shoes" />
                               <Card.Body>
-                                 <Card.Title tag="h2">
-                                    Learning Class
-                                 </Card.Title>
-                                 <p>
-                                    Pelajari semua materi yang berkaitan dengan
-                                    UKMPPD di sini.
-                                 </p>
+                                 <Card.Title tag="h2">Learning Class</Card.Title>
+                                 <p>Pelajari semua materi yang berkaitan dengan UKMPPD di sini.</p>
                               </Card.Body>
                            </Card>
                            <Card className="cursor-pointer">
-                              <Card.Image
-                                 src="/image/bg-exam-medex-2.jpg"
-                                 alt="Shoes"
-                              />
+                              <Card.Image src="/image/bg-exam-medex-2.jpg" alt="Shoes" />
                               <Card.Body>
                                  <Card.Title tag="h2">UKMPPD</Card.Title>
                                  <p>Daftar ujian UKMPPD.</p>
@@ -132,11 +111,7 @@ const Dashboard: NextPage = () => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-   const session = await unstable_getServerSession(
-      ctx.req,
-      ctx.res,
-      nextauthOpts,
-   );
+   const session = await unstable_getServerSession(ctx.req, ctx.res, nextauthOpts);
 
    if (!session) {
       return {

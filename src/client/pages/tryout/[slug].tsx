@@ -11,11 +11,7 @@ import isEmpty from 'lodash/isEmpty';
 
 import examBg from '../../public/image/exam-vector.webp';
 import { getDetailExam, submitExam } from '../../helper/Api/General';
-import {
-   encryptData,
-   isEmptyValues,
-   minuteToSecond,
-} from '../../helper/Common';
+import { encryptData, isEmptyValues, minuteToSecond } from '../../helper/Common';
 import { setLocalStorage } from '../../helper/LocalStorage';
 import dayjs from 'dayjs';
 import CountDownExam from '../../components/Countdown';
@@ -84,15 +80,9 @@ const TryoutDetail: FC<ITryoutProps> = () => {
             let result = 'btn-outline';
             if (activeQuestion == i) {
                result = 'btn-primary';
-            } else if (
-               emptyAnswer == false &&
-               examActivity?.exam[i]?.indecisive == true
-            ) {
+            } else if (emptyAnswer == false && examActivity?.exam[i]?.indecisive == true) {
                result = 'btn-warning';
-            } else if (
-               emptyAnswer == false &&
-               examActivity?.exam[i]?.indecisive == false
-            ) {
+            } else if (emptyAnswer == false && examActivity?.exam[i]?.indecisive == false) {
                result = 'btn-success';
             } else if (emptyAnswer == false && emptyIndecisive == true) {
                result = 'btn-success';
@@ -131,8 +121,7 @@ const TryoutDetail: FC<ITryoutProps> = () => {
    };
 
    const nextQuestion = () => {
-      if (examActivity.exam.length != activeQuestion + 1)
-         setActiveQuestion(activeQuestion + 1);
+      if (examActivity.exam.length != activeQuestion + 1) setActiveQuestion(activeQuestion + 1);
    };
 
    const checkStatsCount = (data) => {
@@ -214,7 +203,7 @@ const TryoutDetail: FC<ITryoutProps> = () => {
    const submitViaPopup = () => {
       togglePopup();
       handleSubmit();
-   }
+   };
 
    const togglePopup = () => {
       setShowPopup(!showPopup);
@@ -253,9 +242,7 @@ const TryoutDetail: FC<ITryoutProps> = () => {
                                  </svg>
                               </div>
                               <div className="">Jumlah Soal</div>
-                              <div className="stat-value">
-                                 {examActivity.totalQuestion}
-                              </div>
+                              <div className="stat-value">{examActivity.totalQuestion}</div>
                            </div>
 
                            <div className="stat">
@@ -272,9 +259,7 @@ const TryoutDetail: FC<ITryoutProps> = () => {
                                  </svg>
                               </div>
                               <div className="">Sudah Dijawab</div>
-                              <div className="stat-value">
-                                 {examActivity.totalAnswered}
-                              </div>
+                              <div className="stat-value">{examActivity.totalAnswered}</div>
                            </div>
 
                            <div className="stat">
@@ -297,9 +282,7 @@ const TryoutDetail: FC<ITryoutProps> = () => {
                               </div>
 
                               <div className="">Ragu-ragu</div>
-                              <div className="stat-value">
-                                 {examActivity.indecisive}
-                              </div>
+                              <div className="stat-value">{examActivity.indecisive}</div>
                            </div>
                            <div className="stat">
                               <div className="stat-figure">
@@ -314,16 +297,14 @@ const TryoutDetail: FC<ITryoutProps> = () => {
                               </div>
 
                               <div className="">Belum Dijawab</div>
-                              <div className="stat-value">
-                                 {examActivity.notAnswered}
-                              </div>
+                              <div className="stat-value">{examActivity.notAnswered}</div>
                            </div>
                         </div>
                      </div>
                      {startTryout && (
                         <div className="flex justify-center pt-5">
                            <button
-                              className="btn btn-success btn-wide text-lg"
+                              className="btn-success btn-wide btn text-lg"
                               disabled={examActivity.notAnswered != 0 || !isEmptyValues(examResult)}
                               onClick={() => popupNotif()}
                            >
@@ -334,7 +315,7 @@ const TryoutDetail: FC<ITryoutProps> = () => {
                      {!startTryout && (
                         <div className="flex justify-center">
                            <button
-                              className="btn btn-wide"
+                              className="btn-wide btn"
                               onClick={() => router.push('/dashboard')}
                            >
                               Back to dashboard
@@ -358,15 +339,11 @@ const TryoutDetail: FC<ITryoutProps> = () => {
                                     Sudah siap untuk memulai Tryout?{' '}
                                  </h1>
                                  <p className="py-6">
-                                    Jika sudah siap untuk memulai ujian,
-                                    silahkan klik tombol mulai ujian dibawah
-                                    ini, selamat mengerjakan!
+                                    Jika sudah siap untuk memulai ujian, silahkan klik tombol mulai
+                                    ujian dibawah ini, selamat mengerjakan!
                                  </p>
                                  <div className="flex justify-center">
-                                    <button
-                                       className="btn btn-primary"
-                                       onClick={() => startExam()}
-                                    >
+                                    <button className="btn-primary btn" onClick={() => startExam()}>
                                        Mulai ujian
                                     </button>
                                  </div>
@@ -389,14 +366,10 @@ const TryoutDetail: FC<ITryoutProps> = () => {
                               if (activeQuestion == i)
                                  return (
                                     <Fragment key={i}>
-                                       <div className="text-xl font-bold">
-                                          {i + 1}.
-                                       </div>
+                                       <div className="text-xl font-bold">{i + 1}.</div>
                                        <div
                                           className={`col-span-11 ${
-                                             val?.indecisive
-                                                ? 'border-2 border-warning'
-                                                : ''
+                                             val?.indecisive ? 'border-2 border-warning' : ''
                                           }`}
                                        >
                                           <div className="">{val.title || val.description}</div>
@@ -407,32 +380,20 @@ const TryoutDetail: FC<ITryoutProps> = () => {
                                                       <div className="form-control">
                                                          <label className="label flex cursor-pointer items-start justify-start py-2">
                                                             <span className="label-text">
-                                                               {optionsFormat(
-                                                                  index,
-                                                               )}
-                                                               .
+                                                               {optionsFormat(index)}.
                                                             </span>
                                                             <div className="px-2">
                                                                <input
                                                                   type="radio"
                                                                   name="radio-1"
                                                                   className="radio px-3 checked:bg-blue-500"
-                                                                  value={
-                                                                     data._id
-                                                                  }
+                                                                  value={data._id}
                                                                   checked={
-                                                                     examActivity
-                                                                        .exam[i]
-                                                                        ?.answer ==
+                                                                     examActivity.exam[i]?.answer ==
                                                                      data._id
                                                                   }
-                                                                  onChange={(
-                                                                     e,
-                                                                  ) =>
-                                                                     toggleAnswer(
-                                                                        e,
-                                                                        i,
-                                                                     )
+                                                                  onChange={(e) =>
+                                                                     toggleAnswer(e, i)
                                                                   }
                                                                />
                                                             </div>
@@ -453,33 +414,23 @@ const TryoutDetail: FC<ITryoutProps> = () => {
                         <div className="px-20">
                            <div className="mt-10">
                               <div className="flex w-full justify-between">
-                                 <button
-                                    className="btn"
-                                    onClick={() => prevQuestion()}
-                                 >
+                                 <button className="btn" onClick={() => prevQuestion()}>
                                     &#60; Previous
                                  </button>
                                  <button
-                                    className="btn btn-warning"
+                                    className="btn-warning btn"
                                     disabled={doubtCondition()}
-                                    onClick={() =>
-                                       toggleIndecisive(activeQuestion)
-                                    }
+                                    onClick={() => toggleIndecisive(activeQuestion)}
                                  >
                                     Ragu-ragu
                                  </button>
-                                 <button
-                                    className="btn"
-                                    onClick={() => nextQuestion()}
-                                 >
+                                 <button className="btn" onClick={() => nextQuestion()}>
                                     Next &#62;
                                  </button>
                               </div>
                            </div>
                            <div className="my-10 flex w-full justify-center">
-                              <div className="text-center">
-                                 {paginationBottom()}
-                              </div>
+                              <div className="text-center">{paginationBottom()}</div>
                            </div>
                         </div>
                      </div>
@@ -499,16 +450,13 @@ const TryoutDetail: FC<ITryoutProps> = () => {
                                           Selamat kamu sudah menyelesaikan ujian{' '}
                                        </h1>
                                        <p className="py-6">
-                                          Silahkan klik tombol lihat hasil
-                                          dibawah ini untuk melihat nilai hasil
-                                          dari ujian kamu.
+                                          Silahkan klik tombol lihat hasil dibawah ini untuk melihat
+                                          nilai hasil dari ujian kamu.
                                        </p>
                                        <div className="flex justify-center">
                                           <button
-                                             className="btn btn-primary"
-                                             onClick={() =>
-                                                setShowExamResult(true)
-                                             }
+                                             className="btn-primary btn"
+                                             onClick={() => setShowExamResult(true)}
                                           >
                                              Lihat Hasil
                                           </button>
@@ -522,15 +470,14 @@ const TryoutDetail: FC<ITryoutProps> = () => {
                                           ? 'Selamat kamu lulus'
                                           : 'Kamu masih belum lulus'}
                                     </h1>
-                                    <h2 className="text-2xl font-bold pt-10">
+                                    <h2 className="pt-10 text-2xl font-bold">
                                        Nilai kamu adalah {examResult.score}
                                     </h2>
-                                    <p className="text-xl py-6">
-                                       Tingkatkan terus kompetensi dan wawasan
-                                       kamu bersama Med-ex!
+                                    <p className="py-6 text-xl">
+                                       Tingkatkan terus kompetensi dan wawasan kamu bersama Med-ex!
                                     </p>
                                     <button
-                                       className="btn btn-primary"
+                                       className="btn-primary btn"
                                        onClick={() => router.push('/dashboard')}
                                     >
                                        Kembali ke Beranda
@@ -545,21 +492,13 @@ const TryoutDetail: FC<ITryoutProps> = () => {
             </div>
             <Footer />
          </main>
-         <PopupModal
-            show={showPopup}
-            toggleShow={togglePopup}
-            successEvent={submitViaPopup}
-         />
+         <PopupModal show={showPopup} toggleShow={togglePopup} successEvent={submitViaPopup} />
       </div>
    );
 };
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-   const session = await unstable_getServerSession(
-      ctx.req,
-      ctx.res,
-      nextauthOpts,
-   );
+   const session = await unstable_getServerSession(ctx.req, ctx.res, nextauthOpts);
 
    if (!session) {
       return {

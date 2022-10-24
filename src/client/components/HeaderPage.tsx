@@ -14,14 +14,8 @@ const HeaderPage = ({ title, subTitle, profile }: IHeaderPage) => {
    return (
       <header id="header" className="relative z-50 px-0">
          <div className="">
-            <div className="flex items-center px-2 text-2xl font-semibold">
-               {title}
-            </div>
-            {subTitle && (
-               <div className="flex items-center px-2 text-gray-500">
-                  {subTitle}
-               </div>
-            )}
+            <div className="flex items-center px-2 text-2xl font-semibold">{title}</div>
+            {subTitle && <div className="flex items-center px-2 text-gray-500">{subTitle}</div>}
          </div>
          <div className="flex items-center">
             <BellIcon className="mr-4 h-6 w-6 text-black" />

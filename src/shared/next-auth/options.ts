@@ -33,7 +33,7 @@ const providers = [
             const { data } = await axios.post(loginUrl, credentials);
             if (data.meta.status !== 200) return null;
             const decoded = jwt.decode(data.data.token);
-            console.log('decoded : ', decoded)
+            console.log('decoded : ', decoded);
             const user = {
                sub: decoded['_id'],
                email: decoded['email'],
@@ -48,13 +48,7 @@ const providers = [
 ];
 
 const callbacks = {
-   signIn: async ({
-      user,
-      account,
-      profile,
-      email,
-      credentials,
-   }): Promise<boolean> => {
+   signIn: async ({ user, account, profile, email, credentials }): Promise<boolean> => {
       if (account.provider == 'google') {
          /**
           * @TODO : persist data user to database

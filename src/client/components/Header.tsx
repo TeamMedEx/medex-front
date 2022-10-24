@@ -33,16 +33,10 @@ function Header({ isLoggedIn }) {
                <li className="customClass" onClick={() => signIn()}>
                   Login
                </li>
-               {/* <li
-                        className="customClass"
-                        onClick={() => router.push('/login')}
-                    >
-                        Login
-                    </li> */}
-               <li
-                  className="customClass"
-                  onClick={() => router.push('/register')}
-               >
+               {/* <li className="customClass" onClick={() => router.push('/login')}>
+                  Login
+               </li> */}
+               <li className="customClass" onClick={() => router.push('/register')}>
                   Register
                </li>
             </ul>

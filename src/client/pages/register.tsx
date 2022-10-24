@@ -28,10 +28,7 @@ const Register: FC<IRegisterProps> = () => {
       e.preventDefault();
 
       // send request to API
-      const { data } = await axios.post<BaseResponse>(
-         'api/auth/register',
-         dataRegister,
-      );
+      const { data } = await axios.post<BaseResponse>('api/auth/register', dataRegister);
 
       if (data.meta.status == 200) {
          router.replace(
@@ -60,8 +57,7 @@ const Register: FC<IRegisterProps> = () => {
                <div className="mt-4" onSubmit={onSubmitHandler}>
                   <form className="mb-4 rounded bg-white px-8 pt-6 pb-8 shadow-md">
                      <div className="text-2xl font-semibold text-blue-900">
-                        Yuk, daftar sekarang buat dapetin diskon spesial di
-                        website Med-ex!
+                        Yuk, daftar sekarang buat dapetin diskon spesial di website Med-ex!
                      </div>
                      <div className="mt-2 flex justify-center">
                         Sudah punya akun?{' '}

@@ -10,18 +10,14 @@ export class ViewController {
 
    async handler(req: Request, res: Response) {
       const parsedUrl = parse(req.url, true);
-      await this.viewService
-         .getNextServer()
-         .render(req, res, parsedUrl.pathname, parsedUrl.query);
+      await this.viewService.getNextServer().render(req, res, parsedUrl.pathname, parsedUrl.query);
    }
 
    @Get('/')
    public async showHome(@Req() req: Request, @Res() res: Response) {
       const parsedUrl = parse(req.url, true);
 
-      await this.viewService
-         .getNextServer()
-         .render(req, res, parsedUrl.pathname, parsedUrl.query);
+      await this.viewService.getNextServer().render(req, res, parsedUrl.pathname, parsedUrl.query);
    }
 
    @Get('/login')
@@ -31,12 +27,7 @@ export class ViewController {
 
       await this.viewService
          .getNextServer()
-         .render(
-            req,
-            res,
-            parsedUrl.pathname,
-            Object.assign(parsedUrl.query, customProps),
-         );
+         .render(req, res, parsedUrl.pathname, Object.assign(parsedUrl.query, customProps));
    }
 
    @Get('/register')
@@ -46,12 +37,7 @@ export class ViewController {
 
       await this.viewService
          .getNextServer()
-         .render(
-            req,
-            res,
-            parsedUrl.pathname,
-            Object.assign(parsedUrl.query, customProps),
-         );
+         .render(req, res, parsedUrl.pathname, Object.assign(parsedUrl.query, customProps));
    }
 
    @Get('/dashboard')
@@ -61,12 +47,7 @@ export class ViewController {
 
       await this.viewService
          .getNextServer()
-         .render(
-            req,
-            res,
-            parsedUrl.pathname,
-            Object.assign(parsedUrl.query, customProps),
-         );
+         .render(req, res, parsedUrl.pathname, Object.assign(parsedUrl.query, customProps));
    }
 
    @Get('/tryout-list')
@@ -76,19 +57,12 @@ export class ViewController {
 
       await this.viewService
          .getNextServer()
-         .render(
-            req,
-            res,
-            parsedUrl.pathname,
-            Object.assign(parsedUrl.query, customProps),
-         );
+         .render(req, res, parsedUrl.pathname, Object.assign(parsedUrl.query, customProps));
    }
 
    @Get('_next*')
    public async assets(@Req() req: Request, @Res() res: Response) {
       const parsedUrl = parse(req.url, true);
-      await this.viewService
-         .getNextServer()
-         .render(req, res, parsedUrl.pathname, parsedUrl.query);
+      await this.viewService.getNextServer().render(req, res, parsedUrl.pathname, parsedUrl.query);
    }
 }

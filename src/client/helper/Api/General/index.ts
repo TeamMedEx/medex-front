@@ -3,11 +3,7 @@ import { API_CALL, errorHandler } from '../../RequestHelper';
 
 type IGetExam = { page?: string; limit?: string; search?: string };
 
-export const getExamList = async ({
-   page = '1',
-   limit = '10',
-   search = '',
-}: IGetExam) => {
+export const getExamList = async ({ page = '1', limit = '10', search = '' }: IGetExam) => {
    try {
       const options = {
          url: `/api/v1/exam/all?page=${page}&limit=${limit}&search=${search}`,

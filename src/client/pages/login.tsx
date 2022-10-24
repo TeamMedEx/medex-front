@@ -41,18 +41,14 @@ const Login: NextPage = () => {
          <div className="max flex flex-col overflow-hidden rounded-md bg-white shadow-lg md:flex-1 md:flex-row lg:max-w-screen-md">
             <div className="bg-blue-500 p-4 py-6 text-white md:flex md:w-80 md:flex-shrink-0 md:flex-col md:items-center md:justify-evenly">
                <div className="my-3 text-center text-5xl font-bold tracking-wider">
-                  <a
-                     className="cursor-pointer"
-                     onClick={() => router.push('/')}
-                  >
+                  <a className="cursor-pointer" onClick={() => router.push('/')}>
                      MED-EX
                   </a>
                </div>
                <p className="mt-6 text-center text-sm font-normal text-gray-300 md:mt-0">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Ullam, porro eligendi eum saepe ea, ratione dignissimos sint
-                  est consequatur, dolore aliquam voluptas dolor sed beatae
-                  minima at. Nesciunt, fugiat placeat.
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam, porro eligendi eum
+                  saepe ea, ratione dignissimos sint est consequatur, dolore aliquam voluptas dolor
+                  sed beatae minima at. Nesciunt, fugiat placeat.
                </p>
                <p className="mt-10 flex flex-col items-center justify-center text-center">
                   <span>Belum punya akun?</span>
@@ -67,10 +63,7 @@ const Login: NextPage = () => {
                </h3>
                <form className="flex flex-col space-y-5">
                   <div className="flex flex-col space-y-1">
-                     <label
-                        htmlFor="username"
-                        className="text-sm font-semibold text-gray-500"
-                     >
+                     <label htmlFor="username" className="text-sm font-semibold text-gray-500">
                         Username
                      </label>
                      <input
@@ -84,10 +77,7 @@ const Login: NextPage = () => {
                   </div>
                   <div className="flex flex-col space-y-1">
                      <div className="flex items-center justify-between">
-                        <label
-                           htmlFor="password"
-                           className="text-sm font-semibold text-gray-500"
-                        >
+                        <label htmlFor="password" className="text-sm font-semibold text-gray-500">
                            Password
                         </label>
                         <a
@@ -201,11 +191,7 @@ const Login: NextPage = () => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-   const session = await unstable_getServerSession(
-      ctx.req,
-      ctx.res,
-      nextauthOpts,
-   );
+   const session = await unstable_getServerSession(ctx.req, ctx.res, nextauthOpts);
 
    if (session && session.user) {
       return {

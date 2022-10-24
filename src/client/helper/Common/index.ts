@@ -54,10 +54,7 @@ export const encryptData = (params) => {
       } else {
          str = str?.toString(); //null
       }
-      const ciphertext = CryptoJS.AES.encrypt(
-         str,
-         process.env.NEXT_PUBLIC_MEDEX_KEY,
-      );
+      const ciphertext = CryptoJS.AES.encrypt(str, process.env.NEXT_PUBLIC_MEDEX_KEY);
       // console.log('encrypted text : ', ciphertext.toString());
 
       return ciphertext.toString();
@@ -74,10 +71,7 @@ export const decryptData = (params) => {
    }
 
    try {
-      const bytes = CryptoJS.AES.decrypt(
-         params,
-         process.env.NEXT_PUBLIC_MEDEX_KEY,
-      );
+      const bytes = CryptoJS.AES.decrypt(params, process.env.NEXT_PUBLIC_MEDEX_KEY);
       const plaintext = bytes.toString(CryptoJS.enc.Utf8);
       console.log('decrypted text : ', plaintext);
 

@@ -31,10 +31,7 @@ const Tryout: FC = () => {
             <SideNav isLoggedIn={false} />
             <div className="lg:pl-[20rem]">
                <div className="mx-auto max-w-3xl xl:ml-0 xl:max-w-5xl">
-                  <HeaderPage
-                     title={'Tryout'}
-                     subTitle={'Daftar tryout yang bisa kamu ikuti'}
-                  />
+                  <HeaderPage title={'Tryout'} subTitle={'Daftar tryout yang bisa kamu ikuti'} />
                   <main
                      id="content-wrapper"
                      className="prose-slate dark:prose-dark prose relative z-20"
@@ -46,24 +43,17 @@ const Tryout: FC = () => {
                                  return (
                                     <div
                                        key={val._id}
-                                       className="card-compact card image-full h-52 w-full bg-base-100 shadow-xl"
+                                       className="image-full card card-compact h-52 w-full bg-base-100 shadow-xl"
                                     >
                                        <figure>
-                                          <img
-                                             src="/image/bg-exam-medex-2.jpg"
-                                             alt="Shoes"
-                                          />
+                                          <img src="/image/bg-exam-medex-2.jpg" alt="Shoes" />
                                        </figure>
                                        <div className="card-body justify-between">
-                                          <h2 className="card-title">
-                                             {val.title}
-                                          </h2>
+                                          <h2 className="card-title">{val.title}</h2>
                                           <div className="flex">
                                              <p>
                                                 Jumlah soal : {} <br />
-                                                Durasi : {
-                                                   val.duration
-                                                } Menit <br />
+                                                Durasi : {val.duration} Menit <br />
                                              </p>
                                              <p>
                                                 Member : {val.type} <br />
@@ -72,12 +62,8 @@ const Tryout: FC = () => {
                                           </div>
                                           <div className="card-actions items-end justify-center">
                                              <button
-                                                className="btn btn-primary"
-                                                onClick={() =>
-                                                   router.push(
-                                                      `/tryout/${val._id}`,
-                                                   )
-                                                }
+                                                className="btn-primary btn"
+                                                onClick={() => router.push(`/tryout/${val._id}`)}
                                              >
                                                 Mulai
                                              </button>
@@ -98,11 +84,7 @@ const Tryout: FC = () => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-   const session = await unstable_getServerSession(
-      ctx.req,
-      ctx.res,
-      nextauthOpts,
-   );
+   const session = await unstable_getServerSession(ctx.req, ctx.res, nextauthOpts);
 
    if (!session) {
       return {

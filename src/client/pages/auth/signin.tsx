@@ -23,10 +23,7 @@ const Login: FC = () => {
       e.preventDefault();
 
       // send request to API
-      const { data } = await axios.post<BaseResponse>(
-         'api/auth/login',
-         dataLogin,
-      );
+      const { data } = await axios.post<BaseResponse>('api/auth/login', dataLogin);
 
       if (data.meta.status == 200) {
          router.replace(

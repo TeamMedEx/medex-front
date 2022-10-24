@@ -25,19 +25,13 @@ function SideNav({ isLoggedIn }) {
          <div>
             <ul className="mt-10 ml-5">
                <li className="rounded-lg px-5 py-2  hover:bg-gray-200">
-                  <a
-                     className="flex cursor-pointer"
-                     onClick={() => router.push('/dashboard')}
-                  >
+                  <a className="flex cursor-pointer" onClick={() => router.push('/dashboard')}>
                      <HomeIcon className="mr-2 h-6 w-6 text-black" />
                      Dashboard
                   </a>
                </li>
                <li className="rounded-lg px-5 py-2  hover:bg-gray-200">
-                  <a
-                     className="flex cursor-pointer"
-                     onClick={() => router.push('/tryout')}
-                  >
+                  <a className="flex cursor-pointer" onClick={() => router.push('/tryout')}>
                      <NewspaperIcon className="mr-2 h-6 w-6 text-black" />
                      Tryout
                   </a>
