@@ -19,6 +19,7 @@ import {
 import { setLocalStorage } from '../../helper/LocalStorage';
 import dayjs from 'dayjs';
 import CountDownExam from '../../components/Countdown';
+import PopupModal from '../../components/PopupModal';
 
 type ITryoutProps = {
    is_logged_in: boolean;
@@ -40,6 +41,9 @@ const TryoutDetail: FC<ITryoutProps> = () => {
       exam: [],
    });
    const [activeQuestion, setActiveQuestion] = useState(0);
+   const [showPopup, setShowPopup] = useState(false);
+   const [examResult, setExamResult] = useState<{ [key: string]: any }>({});
+   const [showExamResult, setShowExamResult] = useState(false);
 
    useEffect(() => {
       if (startTryout) {
@@ -185,30 +189,36 @@ const TryoutDetail: FC<ITryoutProps> = () => {
    };
 
    const timeoutHandle = (val): void => {
-      console.log('isi timeout : ', val);
+      handleSubmit();
+   };
+
+   const popupNotif = async () => {
+      setShowPopup(true);
    };
 
    const handleSubmit = async () => {
-      const answerList = examActivity.exam.map((val, i) => {
-         if (!isEmptyValues(val.answer))
-            ({
-               question_id: val._id,
-               option_id: val.answer,
-            });
+      const answerList = examActivity?.exam.map((val, i) => {
+         return {
+            question_id: val._id,
+            option_id: val?.answer ? val.answer : '',
+         };
       });
-      console.log('isi answerList : ', answerList)
       const answer = {
          answers: answerList,
       };
-      console.log('isi answer : ', answer)
-      console.log('isi examActivity.examId : ', examActivity.examId)
-
 
       const submitResult = await submitExam(examActivity.examId, answer);
-      console.log('isi submitResult : ', submitResult);
+      if (submitResult.meta.status == 200) setExamResult(submitResult.data);
    };
 
-   console.log('isi examActivity : ', examActivity);
+   const submitViaPopup = () => {
+      togglePopup();
+      handleSubmit();
+   }
+
+   const togglePopup = () => {
+      setShowPopup(!showPopup);
+   };
 
    return (
       <div className="h-screen">
@@ -314,8 +324,8 @@ const TryoutDetail: FC<ITryoutProps> = () => {
                         <div className="flex justify-center pt-5">
                            <button
                               className="btn btn-success btn-wide text-lg"
-                              disabled={examActivity.notAnswered != 0}
-                              onClick={() => handleSubmit()}
+                              disabled={examActivity.notAnswered != 0 || !isEmptyValues(examResult)}
+                              onClick={() => popupNotif()}
                            >
                               Selesai Ujian
                            </button>
@@ -365,7 +375,7 @@ const TryoutDetail: FC<ITryoutProps> = () => {
                         </div>
                      </div>
                   )}
-                  {startTryout && (
+                  {startTryout && isEmptyValues(examResult) && (
                      <div className="h-full w-full">
                         <div className="flex items-center justify-center">
                            <CountDownExam
@@ -474,112 +484,72 @@ const TryoutDetail: FC<ITryoutProps> = () => {
                         </div>
                      </div>
                   )}
-                  {/* {startTryout && (
-                     <div className="h-full w-full">
-                        <div className="flex items-center justify-center">
-                           <CountDownExam start={startTryout} />
-                        </div>
-                        <div className="mt-8 grid grid-cols-12 pr-20">
-                           <div className="text-xl font-bold">8.</div>
-                           <div className="col-span-11">
-                              <div className="">
-                                 Lorem ipsum dolor sit amet, consectetur
-                                 adipiscing elit. Donec feugiat odio feugiat,
-                                 mattis libero vitae, porttitor mi. Sed nec elit
-                                 ex. Donec mattis, turpis id interdum feugiat,
-                                 augue dolor vulputate ipsum, in porta lorem
-                                 nulla ut justo. Nunc eget pellentesque tortor,
-                                 sed ornare sapien. Curabitur semper mauris quis
-                                 tellus mollis, vitae imperdiet quam sodales.
-                                 Nunc ultrices maximus orci in lacinia. Interdum
-                                 et malesuada fames ac ante ipsum primis in
-                                 faucibus.
-                              </div>
-                              <div className="mt-3">
-                                 <div className="flex items-start py-2">
-                                    <div>a.</div>
-                                    <div className="px-2">
-                                       <input
-                                          type="radio"
-                                          name="radio-1"
-                                          className="radio px-3"
-                                       />
-                                    </div>{' '}
-                                    <div>feugiat odio</div>
+                  {startTryout && !isEmptyValues(examResult) && (
+                     <div>
+                        <div className="hero rounded-lg bg-base-200">
+                           <div className="hero-content flex-col py-14 px-10 lg:flex-row-reverse">
+                              {!showExamResult ? (
+                                 <>
+                                    <img
+                                       src={`${examBg.src}`}
+                                       className="max-w-sm rounded-lg shadow-2xl"
+                                    />
+                                    <div>
+                                       <h1 className="text-4xl font-bold">
+                                          Selamat kamu sudah menyelesaikan ujian{' '}
+                                       </h1>
+                                       <p className="py-6">
+                                          Silahkan klik tombol lihat hasil
+                                          dibawah ini untuk melihat nilai hasil
+                                          dari ujian kamu.
+                                       </p>
+                                       <div className="flex justify-center">
+                                          <button
+                                             className="btn btn-primary"
+                                             onClick={() =>
+                                                setShowExamResult(true)
+                                             }
+                                          >
+                                             Lihat Hasil
+                                          </button>
+                                       </div>
+                                    </div>
+                                 </>
+                              ) : (
+                                 <div className="max-w-md">
+                                    <h1 className="text-5xl font-bold">
+                                       {examResult.passed
+                                          ? 'Selamat kamu lulus'
+                                          : 'Kamu masih belum lulus'}
+                                    </h1>
+                                    <h2 className="text-2xl font-bold pt-10">
+                                       Nilai kamu adalah {examResult.score}
+                                    </h2>
+                                    <p className="text-xl py-6">
+                                       Tingkatkan terus kompetensi dan wawasan
+                                       kamu bersama Med-ex!
+                                    </p>
+                                    <button
+                                       className="btn btn-primary"
+                                       onClick={() => router.push('/dashboard')}
+                                    >
+                                       Kembali ke Beranda
+                                    </button>
                                  </div>
-                                 <div className="flex items-start py-2">
-                                    <div>b.</div>
-                                    <div className="px-2">
-                                       <input
-                                          type="radio"
-                                          name="radio-1"
-                                          className="radio px-3"
-                                       />
-                                    </div>{' '}
-                                    <div>feugiat ipsum</div>
-                                 </div>
-                                 <div className="flex items-start py-2">
-                                    <div>c.</div>
-                                    <div className="px-2">
-                                       <input
-                                          type="radio"
-                                          name="radio-1"
-                                          className="radio px-3"
-                                       />
-                                    </div>{' '}
-                                    <div>feugiat lacinia</div>
-                                 </div>
-                                 <div className="flex items-start py-2">
-                                    <div>d.</div>
-                                    <div className="px-2">
-                                       <input
-                                          type="radio"
-                                          name="radio-1"
-                                          className="radio px-3"
-                                       />
-                                    </div>{' '}
-                                    <div>feugiat sapien</div>
-                                 </div>
-                                 <div className="flex items-start py-2">
-                                    <div>e.</div>
-                                    <div className="px-2">
-                                       <input
-                                          type="radio"
-                                          name="radio-1"
-                                          className="radio px-3"
-                                       />
-                                    </div>{' '}
-                                    <div>feugiat malesuada</div>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                        <div className='px-20'>
-                           <div className="mt-10">
-                              <div className="flex w-full justify-between">
-                                 <button className="btn">
-                                    &#60;&#60; Previous
-                                 </button>
-                                 <button className="btn btn-warning">
-                                    Ragu-ragu
-                                 </button>
-                                 <button className="btn">
-                                    Next &#62;&#62;
-                                 </button>
-                              </div>
-                           </div>
-                           <div className="my-10 flex w-full justify-center">
-                              <div className="text-center">
-                                 {paginationBottom()}
-                              </div>
+                              )}
                            </div>
                         </div>
                      </div>
-                  )} */}
+                  )}
                </div>
             </div>
             <Footer />
          </main>
+         <PopupModal
+            show={showPopup}
+            toggleShow={togglePopup}
+            successEvent={submitViaPopup}
+         />
       </div>
    );
 };
