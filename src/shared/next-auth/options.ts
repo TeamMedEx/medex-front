@@ -46,7 +46,13 @@ const providers = [
 ];
 
 const callbacks = {
-   signIn: async ({ account, profile }) => {
+   signIn: async ({
+      user,
+      account,
+      profile,
+      email,
+      credentials,
+   }): Promise<boolean> => {
       if (account.provider == 'google') {
          /**
           * @TODO : persist data user to database
