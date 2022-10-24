@@ -184,6 +184,10 @@ const TryoutDetail: FC<ITryoutProps> = () => {
       return result;
    };
 
+   const timeoutHandle = (val): void => {
+      console.log('isi timeout : ', val);
+   };
+
    console.log('isi examActivity : ', examActivity);
 
    return (
@@ -347,6 +351,7 @@ const TryoutDetail: FC<ITryoutProps> = () => {
                            <CountDownExam
                               start={startTryout}
                               duration={minuteToSecond(examActivity?.duration)}
+                              timeout={(val) => timeoutHandle(val)}
                            />
                         </div>
                         <div className="mt-8 grid grid-cols-12 pr-20">

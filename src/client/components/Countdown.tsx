@@ -11,11 +11,13 @@ import { Countdown } from 'react-daisyui';
 interface OwnProps {
    start: boolean;
    duration: number;
+   timeout?: (val) => unknown;
 }
 
 const CountDownExam: FC<PropsWithChildren<OwnProps>> = ({
    start,
    duration,
+   timeout,
 }) => {
    const [hoursTime, setHoursTime] = useState(0);
    const [minutesTime, setMinutesTime] = useState(0);
@@ -54,6 +56,7 @@ const CountDownExam: FC<PropsWithChildren<OwnProps>> = ({
          }
          if (c == 0) {
             clearInterval(myTimer);
+            timeout('time is up');
          }
       }
    };
