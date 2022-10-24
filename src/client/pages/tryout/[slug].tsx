@@ -284,6 +284,7 @@ const TryoutDetail: FC<ITryoutProps> = () => {
                         <div className="flex justify-center pt-5">
                            <button
                               className="btn btn-success btn-wide text-lg"
+                              disabled={examActivity.notAnswered != 0}
                               // onClick={() => router.push('/dashboard')}
                            >
                               Selesai Ujian
