@@ -36,7 +36,7 @@ export const submitExam = async (oid, params) => {
    try {
       const options = {
          url: `/api/v1/exam/${oid}/submit`,
-         data: params?.data,
+         data: params,
          method: 'POST',
       };
       const response = await API_CALL(options);

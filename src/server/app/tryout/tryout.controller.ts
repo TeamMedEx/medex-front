@@ -11,9 +11,6 @@ import {
    Response,
 } from '@nestjs/common';
 // import { Request } from 'express';
-import { AuthLoginDTO, AuthRegisterDTO } from 'src/shared/dtos';
-import { IAuthService } from '../../common/interfaces';
-import { TYPES } from '../../common/type';
 import { TryoutService } from './tryout.service';
 
 @Controller('')
@@ -42,8 +39,6 @@ export class TryoutController {
       return await this.tryoutService.detailTryout(param, req, header);
    }
 
-   // /api/v1/exam/${oid}/submit
-
    @HttpCode(200)
    @Post('/api/v1/exam/:oid/submit')
    @Header('Content-type', 'application/json')
@@ -54,11 +49,4 @@ export class TryoutController {
    ): Promise<any> {
       return this.tryoutService.submitExam(param, req, header);
    }
-
-   // @HttpCode(200)
-   // @Get('/api/v1/consul/user/:orderNumber/:type')
-   // @Header('Content-type', 'application/json')
-   // async getConsulUser(@Param() param: any, @Request() req: any, @Headers() header: any): Promise<any> {
-   // 	return this.chatService.getConsulUser(param, req, header);
-   // }
 }
