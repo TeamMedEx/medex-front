@@ -33,9 +33,11 @@ const providers = [
             const { data } = await axios.post(loginUrl, credentials);
             if (data.meta.status !== 200) return null;
             const decoded = jwt.decode(data.data.token);
+            console.log('decoded : ', decoded)
             const user = {
                sub: decoded['_id'],
                email: decoded['email'],
+               name: decoded['name'],
             };
             return { user, ...data.data };
          } catch (error) {

@@ -5,6 +5,8 @@ import { signIn } from 'next-auth/react';
 
 // shared module
 import { AuthLoginDTO } from '../../shared/dtos';
+import { unstable_getServerSession } from 'next-auth';
+import { nextauthOpts } from '../../shared/next-auth';
 
 const Login: NextPage = () => {
    const router = useRouter();
@@ -198,9 +200,24 @@ const Login: NextPage = () => {
    );
 };
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+   const session = await unstable_getServerSession(
+      ctx.req,
+      ctx.res,
+      nextauthOpts,
+   );
+
+   if (session && session.user) {
+      return {
+         redirect: {
+            destination: '/dashboard',
+            permanent: false,
+         },
+      };
+   }
+
    return {
-      props: {},
+      props: { session },
    };
 };
 
