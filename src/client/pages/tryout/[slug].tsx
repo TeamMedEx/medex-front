@@ -11,7 +11,11 @@ import isEmpty from 'lodash/isEmpty';
 
 import examBg from '../../public/image/exam-vector.webp';
 import { getDetailExam } from '../../helper/Api/General';
-import { encryptData, isEmptyValues } from '../../helper/Common';
+import {
+   encryptData,
+   isEmptyValues,
+   minuteToSecond,
+} from '../../helper/Common';
 import { setLocalStorage } from '../../helper/LocalStorage';
 import dayjs from 'dayjs';
 import CountDownExam from '../../components/Countdown';
@@ -32,6 +36,7 @@ const TryoutDetail: FC<ITryoutProps> = () => {
       indecisive: 0,
       notAnswered: 0,
       startedAt: '',
+      duration: 0,
       exam: [],
    });
    const [activeQuestion, setActiveQuestion] = useState(0);
@@ -53,6 +58,7 @@ const TryoutDetail: FC<ITryoutProps> = () => {
          indecisive: 0,
          notAnswered: data.questions.length,
          startedAt: '',
+         duration: data.duration,
          exam: data.questions,
       };
       setLocalStorage('examActivity', encryptData(body));
@@ -338,7 +344,10 @@ const TryoutDetail: FC<ITryoutProps> = () => {
                   {startTryout && (
                      <div className="h-full w-full">
                         <div className="flex items-center justify-center">
-                           <CountDownExam start={startTryout} />
+                           <CountDownExam
+                              start={startTryout}
+                              duration={minuteToSecond(examActivity?.duration)}
+                           />
                         </div>
                         <div className="mt-8 grid grid-cols-12 pr-20">
                            {examActivity?.exam.map((val, i) => {
