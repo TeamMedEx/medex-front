@@ -42,6 +42,19 @@ export class TryoutController {
       return await this.tryoutService.detailTryout(param, req, header);
    }
 
+   // /api/v1/exam/${oid}/submit
+
+   @HttpCode(200)
+   @Post('/api/v1/exam/:oid/submit')
+   @Header('Content-type', 'application/json')
+   async submitExam(
+      @Param() param: any,
+      @Request() req: any,
+      @Headers() header: any,
+   ): Promise<any> {
+      return this.tryoutService.submitExam(param, req, header);
+   }
+
    // @HttpCode(200)
    // @Get('/api/v1/consul/user/:orderNumber/:type')
    // @Header('Content-type', 'application/json')

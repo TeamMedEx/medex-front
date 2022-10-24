@@ -10,7 +10,7 @@ import type { GetServerSideProps } from 'next';
 import isEmpty from 'lodash/isEmpty';
 
 import examBg from '../../public/image/exam-vector.webp';
-import { getDetailExam } from '../../helper/Api/General';
+import { getDetailExam, submitExam } from '../../helper/Api/General';
 import {
    encryptData,
    isEmptyValues,
@@ -188,6 +188,26 @@ const TryoutDetail: FC<ITryoutProps> = () => {
       console.log('isi timeout : ', val);
    };
 
+   const handleSubmit = async () => {
+      const answerList = examActivity.exam.map((val, i) => {
+         if (!isEmptyValues(val.answer))
+            ({
+               question_id: val._id,
+               option_id: val.answer,
+            });
+      });
+      console.log('isi answerList : ', answerList)
+      const answer = {
+         answers: answerList,
+      };
+      console.log('isi answer : ', answer)
+      console.log('isi examActivity.examId : ', examActivity.examId)
+
+
+      const submitResult = await submitExam(examActivity.examId, answer);
+      console.log('isi submitResult : ', submitResult);
+   };
+
    console.log('isi examActivity : ', examActivity);
 
    return (
@@ -295,7 +315,7 @@ const TryoutDetail: FC<ITryoutProps> = () => {
                            <button
                               className="btn btn-success btn-wide text-lg"
                               disabled={examActivity.notAnswered != 0}
-                              // onClick={() => router.push('/dashboard')}
+                              onClick={() => handleSubmit()}
                            >
                               Selesai Ujian
                            </button>
