@@ -28,7 +28,7 @@ const Dashboard: NextPage = () => {
                <div className="lg:pl-[20rem]">
                   <div className="mx-auto max-w-3xl xl:ml-0 xl:max-w-5xl">
                      <HeaderPage
-                        title={'Selamat Datang, Desmond!'}
+                        title={`Selamat Datang, ${session?.user?.name}!`}
                         subTitle={'Saatnya lulus UKPMPPD bersama Med-Ex'}
                      />
                      <main

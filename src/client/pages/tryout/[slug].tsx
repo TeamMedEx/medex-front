@@ -12,11 +12,16 @@ import isEmpty from 'lodash/isEmpty';
 import examBg from '../../public/image/exam-vector.webp';
 import { getDetailExam, submitExam } from '../../helper/Api/General';
 import {
+   decryptData,
    encryptData,
    isEmptyValues,
    minuteToSecond,
 } from '../../helper/Common';
-import { setLocalStorage } from '../../helper/LocalStorage';
+import {
+   getLocalStorage,
+   removeLocalStorage,
+   setLocalStorage,
+} from '../../helper/LocalStorage';
 import dayjs from 'dayjs';
 import CountDownExam from '../../components/Countdown';
 import PopupModal from '../../components/PopupModal';
@@ -37,21 +42,29 @@ const TryoutDetail: FC<ITryoutProps> = () => {
       indecisive: 0,
       notAnswered: 0,
       startedAt: '',
+      endedAt: '',
       duration: 0,
+      submitted: false,
       exam: [],
    });
    const [activeQuestion, setActiveQuestion] = useState(0);
    const [showPopup, setShowPopup] = useState(false);
    const [examResult, setExamResult] = useState<{ [key: string]: any }>({});
    const [showExamResult, setShowExamResult] = useState(false);
+   const [countdownTime, setCountdownTime] = useState(0);
 
    useEffect(() => {
       if (startTryout) {
          // countDownTimer();
       } else {
-         getExamData();
+         dataInit();
       }
    }, [startTryout]);
+
+   const dataInit = async () => {
+      const data = await getExamData();
+      checkPrevExam(data);
+   };
 
    const getExamData = async () => {
       const { data } = await getDetailExam(router.query.slug);
@@ -62,13 +75,43 @@ const TryoutDetail: FC<ITryoutProps> = () => {
          indecisive: 0,
          notAnswered: data.questions.length,
          startedAt: '',
+         endedAt: '',
          duration: data.duration,
+         submitted: false,
          exam: data.questions,
       };
-      setLocalStorage('examActivity', encryptData(body));
+      setCountdownTime(minuteToSecond(data.duration));
       setExamActivity(body);
       setExamData(data);
       return data;
+   };
+
+   const checkPrevExam = async (dataExam) => {
+      const examLocalStorage = await getLocalStorage('examActivity');
+      const parsedData = JSON.parse(decryptData(examLocalStorage));
+      if (!parsedData) return;
+      // console.log('parsedData : ', parsedData);
+      // console.log('examActivity : ', dataExam);
+      const endedLastExam = dayjs(parsedData.endedAt);
+      const now = dayjs();
+      if (parsedData.examId == dataExam._id) {
+         if (endedLastExam.diff(now) <= 0) {
+            // remove local storage
+            await removeLocalStorage('examActivity');
+         } else {
+            //start exam pake data terakhir
+            setExamActivity(parsedData);
+            setCountdownTime(endedLastExam.diff(now, 'second'));
+            setStartTryout(true);
+         }
+      } else {
+         if (endedLastExam.diff(now) <= 0) {
+            // remove localstorage
+            await removeLocalStorage('examActivity');
+         } else {
+            // redirect to tryout with last ID, / munculin popup notifikasi untuk pindah ke tryout yang sedang berjalan
+         }
+      }
    };
 
    const selectQuestion = (id) => {
@@ -122,7 +165,10 @@ const TryoutDetail: FC<ITryoutProps> = () => {
       const body = {
          ...examActivity,
          startedAt: dayjs().format(),
+         endedAt: dayjs().add(examActivity.duration, 'minute').format(),
       };
+
+      setLocalStorage('examActivity', encryptData(body));
       setExamActivity(body);
    };
 
@@ -167,7 +213,7 @@ const TryoutDetail: FC<ITryoutProps> = () => {
       dataTemp.exam[index].answer = e.currentTarget.value;
 
       const dataAfterCheck = checkStatsCount(dataTemp);
-
+      setLocalStorage('examActivity', encryptData(dataTemp));
       setExamActivity(dataAfterCheck);
    };
 
@@ -175,6 +221,7 @@ const TryoutDetail: FC<ITryoutProps> = () => {
       const dataTemp = { ...examActivity };
       dataTemp.exam[index].indecisive = !dataTemp.exam[index].indecisive;
       const dataAfterCheck = checkStatsCount(dataTemp);
+      setLocalStorage('examActivity', encryptData(dataTemp));
       setExamActivity(dataAfterCheck);
    };
 
@@ -207,6 +254,7 @@ const TryoutDetail: FC<ITryoutProps> = () => {
          answers: answerList,
       };
 
+      await removeLocalStorage('examActivity');
       const submitResult = await submitExam(examActivity.examId, answer);
       if (submitResult.meta.status == 200) setExamResult(submitResult.data);
    };
@@ -214,7 +262,7 @@ const TryoutDetail: FC<ITryoutProps> = () => {
    const submitViaPopup = () => {
       togglePopup();
       handleSubmit();
-   }
+   };
 
    const togglePopup = () => {
       setShowPopup(!showPopup);
@@ -324,7 +372,10 @@ const TryoutDetail: FC<ITryoutProps> = () => {
                         <div className="flex justify-center pt-5">
                            <button
                               className="btn btn-success btn-wide text-lg"
-                              disabled={examActivity.notAnswered != 0 || !isEmptyValues(examResult)}
+                              disabled={
+                                 examActivity.notAnswered != 0 ||
+                                 !isEmptyValues(examResult)
+                              }
                               onClick={() => popupNotif()}
                            >
                               Selesai Ujian
@@ -380,7 +431,7 @@ const TryoutDetail: FC<ITryoutProps> = () => {
                         <div className="flex items-center justify-center">
                            <CountDownExam
                               start={startTryout}
-                              duration={minuteToSecond(examActivity?.duration)}
+                              duration={countdownTime}
                               timeout={(val) => timeoutHandle(val)}
                            />
                         </div>
@@ -399,7 +450,9 @@ const TryoutDetail: FC<ITryoutProps> = () => {
                                                 : ''
                                           }`}
                                        >
-                                          <div className="">{val.title || val.description}</div>
+                                          <div className="">
+                                             {val.title || val.description}
+                                          </div>
                                           <div className="mt-3">
                                              {val.options.map((data, index) => {
                                                 return (
@@ -522,10 +575,11 @@ const TryoutDetail: FC<ITryoutProps> = () => {
                                           ? 'Selamat kamu lulus'
                                           : 'Kamu masih belum lulus'}
                                     </h1>
-                                    <h2 className="text-2xl font-bold pt-10">
-                                       Nilai kamu adalah {examResult.score}
+                                    <h2 className="pt-10 text-2xl font-bold">
+                                       Nilai kamu adalah{' '}
+                                       {Math.ceil(examResult.score)}
                                     </h2>
-                                    <p className="text-xl py-6">
+                                    <p className="py-6 text-xl">
                                        Tingkatkan terus kompetensi dan wawasan
                                        kamu bersama Med-ex!
                                     </p>

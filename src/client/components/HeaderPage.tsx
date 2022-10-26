@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import { BellIcon } from '@heroicons/react/24/outline';
-import { signOut } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 
 type IHeaderPage = {
    title: string;
@@ -10,6 +10,7 @@ type IHeaderPage = {
 
 const HeaderPage = ({ title, subTitle, profile }: IHeaderPage) => {
    const router = useRouter();
+   const { data: session, status } = useSession();
 
    return (
       <header id="header" className="relative z-50 px-0">
@@ -36,7 +37,7 @@ const HeaderPage = ({ title, subTitle, profile }: IHeaderPage) => {
                      </div>
                   </div>
                   <div className="flex items-center justify-center px-2 font-semibold">
-                     Desmond Doe
+                     {session?.user?.name}
                   </div>
                </label>
                <ul

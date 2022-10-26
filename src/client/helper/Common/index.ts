@@ -79,7 +79,7 @@ export const decryptData = (params) => {
          process.env.NEXT_PUBLIC_MEDEX_KEY,
       );
       const plaintext = bytes.toString(CryptoJS.enc.Utf8);
-      console.log('decrypted text : ', plaintext);
+      // console.log('decrypted text : ', plaintext);
 
       return plaintext;
    } catch (error) {
